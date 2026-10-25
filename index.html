@@ -101,6 +101,8 @@ input[type=text]:focus{border-color:var(--blue)}
 .confetti{position:fixed;top:-10px;width:10px;height:14px;z-index:9;animation:fall linear forwards;pointer-events:none}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 .foot{text-align:center;color:var(--muted);font-size:.85rem;margin-top:6px}
+.sendStatus{text-align:center;font-weight:700;margin-top:10px;font-size:1rem;color:var(--muted)}
+.sendStatus.ok{color:var(--green)} .sendStatus.err{color:#b77800}
 @media (max-width:420px){ .stats{grid-template-columns:repeat(2,1fr)} .opt{font-size:1.7rem} }
 @media print{ body{background:#fff} .btn,.foot{display:none!important} .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid} }
 </style>
@@ -209,6 +211,7 @@ input[type=text]:focus{border-color:var(--blue)}
     <div class="big" id="pct">0%</div>
     <p class="sub" id="resSub" style="margin-bottom:4px"></p>
     <div class="delta" id="delta"></div>
+    <div class="sendStatus" id="sendStatus"></div>
   </div>
 
   <div class="card">
@@ -292,7 +295,7 @@ input[type=text]:focus{border-color:var(--blue)}
   <button class="btn alt" id="again">New test (fresh questions)</button>
   <button class="btn ghost" id="printBtn">🖨️ Print / save results</button>
   <button class="btn ghost" id="home">Change settings</button>
-  <p class="foot">Results are saved on this device only.</p>
+  <p class="foot">Results are emailed to your teacher and saved on this device.</p>
 </div>
 
 <p class="foot" id="kb">Keyboard: press 1–4 to choose • Enter to submit a typed answer</p>
@@ -638,6 +641,41 @@ input[type=text]:focus{border-color:var(--blue)}
     if(!tips.length) tips.push("<b>Keep going!</b> Do one test a day until the competition and watch your progress chart climb.");
     $("tips").innerHTML=tips.map(t=>"<li>"+t+"</li>").join("");
 
+    // email the results
+    if(n){
+      const strip=h=>h.replace(/<[^>]+>/g,"").replace(/&nbsp;/g," ");
+      const line=(label,arr)=>arr.length?arr.length+" questions, "+pctOf(arr.filter(r=>r.ok).length,arr.length)+"% correct, "+fmt(avg(arr.map(r=>r.t)))+" average, "+arr.filter(r=>r.timeout).length+" timed out":"none";
+      const now=new Date();
+      const report={
+        "_subject":"Mental Maths results: "+(nm||"Student")+" "+score+"/"+n+" ("+pct+"%)",
+        "_template":"table",
+        "_captcha":"false",
+        "Name":nm||"(no name entered)",
+        "Date and time":now.toLocaleString(),
+        "Test type":practiceRun?"Practise my mistakes":"New test",
+        "Settings":({mix:"Mix of adding and times",add:"Adding only",mul:"Times only"})[settings.mode]+" | "+({tables:"Times tables to 12×12",big:"2-digit × 1-digit",hard:"2-digit × 2-digit"})[settings.mlevel]+" | "+(settings.input==="choice"?"Pick an option":"Typed answers")+" | "+settings.time+"s per question",
+        "Score":score+" / "+n+" ("+pct+"%)",
+        "Correct / Wrong / Timed out":score+" / "+wrong+" / "+timedOut,
+        "Average time per question":fmt(avgAll),
+        "Average time when correct":rightT.length?fmt(avg(rightT)):"–",
+        "Total test time":$("sTotal").textContent,
+        "Fastest / Slowest answer":$("sFast").textContent+" / "+$("sSlow").textContent,
+        "Correct answers per minute":$("sPerMin").textContent,
+        "Best streak":String(bestStreak),
+        "First half / Second half score":(h1.length?h1p+"%":"–")+" / "+(h2.length?h2p+"%":"–"),
+        "Change since last test":d.textContent||"First test on this device",
+        "Adding":line("",adds),
+        "Adding without carrying":line("",noCarry),
+        "Adding with carrying":line("",carry),
+        "Times":line("",muls),
+        "Times tables to revise":weakTables.length?weakTables.map(w=>w.k+"× ("+w.p+"%, "+fmt(w.at)+")").join(", "):"none",
+        "Correct but slow":slow.length?slow.map(r=>r.a+" "+r.op+" "+r.b+" = "+r.ans+" ("+fmt(r.t)+")").join(" | "):"none",
+        "Mistakes":mistakes.length?mistakes.slice(0,60).map(m=>m.a+" "+m.op+" "+m.b+" = "+m.ans+(m.timeout?" (timed out)":" (said "+m.given+")")).join(" | ")+(mistakes.length>60?" | …and "+(mistakes.length-60)+" more":""):"none",
+        "Coach's tips":tips.map(strip).join(" | ")
+      };
+      sendReport(report);
+    }
+
     // save history
     if(n){
       hist.push({d:new Date().toISOString(),n:n,score:score,pct:pct,avg:+avgAll.toFixed(2),to:timedOut,mode:settings.mode,practice:practiceRun});
@@ -698,6 +736,32 @@ input[type=text]:focus{border-color:var(--blue)}
       return "<tr><td>"+ds+(h.practice?" 🔁":"")+"</td><td>"+h.n+"</td><td>"+h.pct+"%</td><td>"+fmt(h.avg)+"</td><td>"+(h.to||0)+"</td></tr>";
     }).join("");
   }
+
+  // ---------- Email sending (FormSubmit) ----------
+  // After activating, replace the address below with the private code FormSubmit emails you, to hide the address.
+  const MAIL_TO="aahmed.dbs@gmail.com";
+  const MAIL_URL="https://formsubmit.co/ajax/"+MAIL_TO;
+  function getPending(){ try{ return JSON.parse(load("mm_pending")||"[]"); }catch(e){ return []; } }
+  function postReport(r){
+    return fetch(MAIL_URL,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(r)})
+      .then(res=>res.json()).then(j=>{ if(String(j.success)!=="true") throw new Error(j.message||"not sent"); return j; });
+  }
+  function sendReport(r){
+    const st=$("sendStatus");
+    st.className="sendStatus"; st.textContent="📧 Sending results to your teacher…";
+    postReport(r).then(()=>{
+      st.className="sendStatus ok"; st.textContent="📧 Results sent ✓";
+    }).catch(()=>{
+      const p=getPending(); p.push(r); while(p.length>20) p.shift(); store("mm_pending",JSON.stringify(p));
+      st.className="sendStatus err"; st.textContent="📧 Couldn't send right now. Results will be sent automatically next time the game is opened online.";
+    });
+  }
+  function flushPending(){
+    const p=getPending(); if(!p.length) return;
+    store("mm_pending","[]");
+    p.reduce((chain,r)=>chain.then(()=>postReport(r).catch(()=>{ const q=getPending(); q.push(r); store("mm_pending",JSON.stringify(q)); })),Promise.resolve());
+  }
+  if(navigator.onLine!==false) setTimeout(flushPending,1500);
 
   function confetti(){
     const colors=["#3d7bff","#22b573","#ffb020","#ff5a5f","#8a5cff"];
