@@ -121,8 +121,9 @@ input[type=text]:focus{border-color:var(--blue)}
 
   <label class="title">What do you want to practise?</label>
   <div class="chips" data-group="mode">
-    <button class="chip on" data-v="mix">Mix ➕✖️</button>
+    <button class="chip on" data-v="mix">Mix ➕➖✖️</button>
     <button class="chip" data-v="add">Adding ➕</button>
+    <button class="chip" data-v="sub">Subtracting ➖</button>
     <button class="chip" data-v="mul">Times ✖️</button>
   </div>
 
@@ -355,6 +356,11 @@ input[type=text]:focus{border-color:var(--blue)}
     const b=Math.random()<0.8 ? rnd(10,99) : rnd(1,9);
     return Math.random()<.5 ? {a,b,op:"+"} : {a:b,b:a,op:"+"};
   }
+  function makeSub(){
+    const a=rnd(20,99);
+    const b=Math.random()<0.8 ? rnd(10,a-1) : rnd(1,9);
+    return {a,b,op:"−"};
+  }
   function makeMul(){
     let a,b;
     if(settings.mlevel==="tables"){ a=rnd(2,12); b=rnd(2,12); }
@@ -372,13 +378,14 @@ input[type=text]:focus{border-color:var(--blue)}
       guard++;
       let q;
       if(settings.mode==="add") q=makeAdd();
+      else if(settings.mode==="sub") q=makeSub();
       else if(settings.mode==="mul") q=makeMul();
-      else q=(list.length%2===0) ? makeAdd() : makeMul();
+      else q=[makeAdd,makeSub,makeMul][list.length%3]();
       const key=q.a+q.op+q.b;
       if(seen.has(key) && guard<n*30) continue;
       if(recent.has(key) && guard<n*15) continue;
       seen.add(key);
-      q.ans = q.op==="+" ? q.a+q.b : q.a*q.b;
+      q.ans = q.op==="+" ? q.a+q.b : q.op==="−" ? q.a-q.b : q.a*q.b;
       list.push(q);
     }
     recent=new Set(list.map(q=>q.a+q.op+q.b));
@@ -388,8 +395,9 @@ input[type=text]:focus{border-color:var(--blue)}
   }
   function distractors(q){
     const s=new Set([q.ans]), ans=q.ans, c=[];
-    if(q.op==="+"){
+    if(q.op==="+"||q.op==="−"){
       c.push(ans+1,ans-1,ans+10,ans-10,ans+2,ans-2,ans+11,ans-9);
+      if(q.op==="−") c.push(q.a+q.b, Math.abs((q.a%10)-(q.b%10))+(Math.floor(q.a/10)-Math.floor(q.b/10))*10);
       const r=parseInt(String(ans).split("").reverse().join(""),10); if(r!==ans) c.push(r);
     }else{
       c.push(ans+q.a,ans-q.a,ans+q.b,ans-q.b,ans+1,ans-1,ans+10,ans-10,(q.a+1)*q.b,q.a*(q.b-1));
@@ -432,8 +440,8 @@ input[type=text]:focus{border-color:var(--blue)}
     $("prog").style.width=(idx/qs.length*100)+"%";
     $("question").textContent=q.a+" "+q.op+" "+q.b;
     const tag=$("tag");
-    tag.textContent = q.op==="+" ? "Adding" : "Times";
-    tag.style.background = q.op==="+" ? "var(--blue)" : "var(--purple)";
+    tag.textContent = q.op==="+" ? "Adding" : q.op==="−" ? "Subtracting" : "Times";
+    tag.style.background = q.op==="+" ? "var(--blue)" : q.op==="−" ? "var(--teal)" : "var(--purple)";
     $("fb").textContent=""; $("fb").className="feedback";
     if(settings.input==="choice"){
       const box=$("opts"); box.innerHTML="";
@@ -528,6 +536,7 @@ input[type=text]:focus{border-color:var(--blue)}
   const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
   const pctOf=(r,n)=>n?Math.round(r/n*100):0;
   const isCarry=q=>q.op==="+" && ((q.a%10)+(q.b%10))>=10;
+  const isBorrow=q=>q.op==="−" && (q.a%10)<(q.b%10);
   const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
   function showResults(){
@@ -577,11 +586,12 @@ input[type=text]:focus{border-color:var(--blue)}
     }
 
     // + vs ×
-    const adds=log.filter(r=>r.op==="+"), muls=log.filter(r=>r.op==="×");
+    const adds=log.filter(r=>r.op==="+"), subs=log.filter(r=>r.op==="−"), muls=log.filter(r=>r.op==="×");
     const carry=adds.filter(isCarry), noCarry=adds.filter(r=>!isCarry(r));
+    const borrow=subs.filter(isBorrow), noBorrow=subs.filter(r=>!isBorrow(r));
     const row=(label,arr)=>arr.length?"<tr><td>"+label+"</td><td>"+arr.length+"</td><td>"+pctOf(arr.filter(r=>r.ok).length,arr.length)+"%</td><td>"+fmt(avg(arr.map(r=>r.t)))+"</td><td>"+arr.filter(r=>r.timeout).length+"</td></tr>":"";
     $("cmp").innerHTML="<tr><th>Type</th><th>Qs</th><th>Correct</th><th>Avg time</th><th>⏰</th></tr>"+
-      row("➕ Adding (all)",adds)+row("&nbsp;&nbsp;↳ no carrying",noCarry)+row("&nbsp;&nbsp;↳ with carrying",carry)+row("✖️ Times",muls);
+      row("➕ Adding (all)",adds)+row("&nbsp;&nbsp;↳ no carrying",noCarry)+row("&nbsp;&nbsp;↳ with carrying",carry)+row("➖ Subtracting (all)",subs)+row("&nbsp;&nbsp;↳ no borrowing",noBorrow)+row("&nbsp;&nbsp;↳ with borrowing",borrow)+row("✖️ Times",muls);
 
     // speed bands
     const band={g:0,b:0,a:0,r:0};
@@ -631,10 +641,18 @@ input[type=text]:focus{border-color:var(--blue)}
       const ct=avg(carry.map(r=>r.t)), nt=avg(noCarry.map(r=>r.t));
       if(cp<np-10 || ct>nt+2) tips.push("<b>Carrying sums are harder for you</b> ("+cp+"% correct, "+fmt(ct)+" each). Try: add the tens first, then the ones. 47 + 38 → 70 + 15 = 85.");
     }
+    if(borrow.length>=3 && noBorrow.length>=3){
+      const bp=pctOf(borrow.filter(r=>r.ok).length,borrow.length), nbp=pctOf(noBorrow.filter(r=>r.ok).length,noBorrow.length);
+      const bt=avg(borrow.map(r=>r.t)), nbt=avg(noBorrow.map(r=>r.t));
+      if(bp<nbp-10 || bt>nbt+2) tips.push("<b>Borrowing subtractions are harder for you</b> ("+bp+"% correct, "+fmt(bt)+" each). Try counting up: 72 − 48 → 48 + 2 = 50, + 22 = 72, so the answer is 24.");
+    }
     if(weakTables.length) tips.push("<b>Times tables to revise:</b> "+weakTables.slice(0,3).map(w=>w.k+"×").join(", ")+". Say them out loud each morning and before bed.");
-    if(adds.length>=4 && muls.length>=4){
-      const ap=pctOf(adds.filter(r=>r.ok).length,adds.length), mp=pctOf(muls.filter(r=>r.ok).length,muls.length);
-      if(Math.abs(ap-mp)>=15) tips.push("<b>Focus on "+(ap<mp?"adding":"times")+"</b>. It scored "+Math.min(ap,mp)+"% compared with "+Math.max(ap,mp)+"% for "+(ap<mp?"times":"adding")+". Choose that mode on the start screen for extra practice.");
+    {
+      const types=[["adding",adds],["subtracting",subs],["times",muls]].filter(x=>x[1].length>=4).map(x=>[x[0],pctOf(x[1].filter(r=>r.ok).length,x[1].length)]);
+      if(types.length>=2){
+        types.sort((x,y)=>x[1]-y[1]); const lo=types[0], hi=types[types.length-1];
+        if(hi[1]-lo[1]>=15) tips.push("<b>Focus on "+lo[0]+"</b>. It scored "+lo[1]+"% compared with "+hi[1]+"% for "+hi[0]+". Choose that mode on the start screen for extra practice.");
+      }
     }
     if(n>=20 && h2p<h1p-10) tips.push("<b>Stamina:</b> your score dropped from "+h1p+"% to "+h2p+"% in the second half. Practise longer tests (50+) so you stay sharp to the end.");
     if(wrong>=3 && answered.length && avg(log.filter(r=>!r.ok&&!r.timeout).map(r=>r.t))<2.5) tips.push("<b>Slow down a tiny bit:</b> most wrong answers were very quick guesses. Take one second to check.");
@@ -654,7 +672,7 @@ input[type=text]:focus{border-color:var(--blue)}
         "Name":nm||"(no name entered)",
         "Date and time":now.toLocaleString(),
         "Test type":practiceRun?"Practise my mistakes":"New test",
-        "Settings":({mix:"Mix of adding and times",add:"Adding only",mul:"Times only"})[settings.mode]+" | "+({tables:"Times tables to 12×12",big:"2-digit × 1-digit",hard:"2-digit × 2-digit"})[settings.mlevel]+" | "+(settings.input==="choice"?"Pick an option":"Typed answers")+" | "+settings.time+"s per question",
+        "Settings":({mix:"Mix of adding, subtracting and times",add:"Adding only",sub:"Subtracting only",mul:"Times only"})[settings.mode]+" | "+({tables:"Times tables to 12×12",big:"2-digit × 1-digit",hard:"2-digit × 2-digit"})[settings.mlevel]+" | "+(settings.input==="choice"?"Pick an option":"Typed answers")+" | "+settings.time+"s per question",
         "Score":score+" / "+n+" ("+pct+"%)",
         "Correct / Wrong / Timed out":score+" / "+wrong+" / "+timedOut,
         "Average time per question":fmt(avgAll),
@@ -668,6 +686,9 @@ input[type=text]:focus{border-color:var(--blue)}
         "Adding":line("",adds),
         "Adding without carrying":line("",noCarry),
         "Adding with carrying":line("",carry),
+        "Subtracting":line("",subs),
+        "Subtracting without borrowing":line("",noBorrow),
+        "Subtracting with borrowing":line("",borrow),
         "Times":line("",muls),
         "Times tables to revise":weakTables.length?weakTables.map(w=>w.k+"× ("+w.p+"%, "+fmt(w.at)+")").join(", "):"none",
         "Correct but slow":slow.length?slow.map(r=>r.a+" "+r.op+" "+r.b+" = "+r.ans+" ("+fmt(r.t)+")").join(" | "):"none",
