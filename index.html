@@ -8,7 +8,7 @@
 <style>
 :root{
   --bg:#eef6ff; --card:#ffffff; --ink:#1d2a44; --muted:#6b7a99; --line:#e3ecfb;
-  --blue:#3d7bff; --green:#22b573; --red:#ff5a5f; --amber:#ffb020; --purple:#8a5cff; --teal:#13b8a6;
+  --blue:#3d7bff; --green:#22b573; --red:#ff5a5f; --amber:#ffb020; --purple:#8a5cff; --teal:#13b8a6; --orange:#ff8a3d;
   --shadow:0 10px 30px rgba(29,42,68,.12);
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -24,9 +24,15 @@ h2{font-size:1.35rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
 label.title{display:block;font-weight:700;margin:14px 0 8px}
 input[type=text]{width:100%;font:inherit;font-size:1.2rem;padding:10px 14px;border:3px solid #d5e2f7;border-radius:14px;outline:none}
 input[type=text]:focus{border-color:var(--blue)}
+input.err{border-color:var(--red)!important}
+.names{display:grid;gap:8px}
+.names .nrow{display:flex;align-items:center;gap:8px}
+.names .nrow b{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;flex:none}
+.msg{color:var(--red);font-weight:700;margin-top:6px;min-height:1.2em}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font:inherit;font-size:1.05rem;font-weight:700;padding:8px 14px;border-radius:999px;border:3px solid #d5e2f7;background:#fff;color:var(--ink);cursor:pointer}
 .chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn,.opt,.chip{-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 .btn{font:inherit;font-weight:800;font-size:1.35rem;border:none;border-radius:18px;padding:14px 22px;cursor:pointer;color:#fff;background:var(--green);box-shadow:0 6px 0 #178a56;width:100%;margin-top:18px}
 .btn:active{transform:translateY(3px);box-shadow:0 3px 0 #178a56}
 .btn.alt{background:var(--blue);box-shadow:0 6px 0 #2a5bc4}
@@ -34,12 +40,18 @@ input[type=text]:focus{border-color:var(--blue)}
 .btn.big{font-size:1.8rem;padding:20px}
 .rules{background:#f3f7ff;border-radius:16px;padding:12px 16px;margin-top:16px;font-size:1rem;line-height:1.5}
 .best{text-align:center;color:var(--muted);margin-top:12px}
+.check{display:flex;align-items:center;gap:8px;margin-top:12px;font-weight:600}
+.check input{width:20px;height:20px}
 /* Game */
 .top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .pill{background:#fff;border-radius:999px;padding:6px 14px;font-weight:700;box-shadow:var(--shadow);font-size:1rem}
 .pill b{color:var(--blue)}
+.who{font-weight:800;font-size:1.2rem;text-align:center;margin-bottom:6px}
 .progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:12px}
 .progress i{display:block;height:100%;width:0;background:var(--blue);transition:width .3s}
+.dots{display:flex;justify-content:center;gap:8px;margin-bottom:10px}
+.dots i{width:16px;height:16px;border-radius:50%;background:var(--line)}
+.dots i.ok{background:var(--green)} .dots i.no{background:var(--red)} .dots i.cur{background:var(--blue)}
 .timer{position:relative;height:22px;background:var(--line);border-radius:999px;overflow:hidden;margin:6px 0 4px}
 .timer i{position:absolute;left:0;top:0;bottom:0;width:100%;background:var(--green);border-radius:999px;transition:width .1s linear,background .3s}
 .secs{text-align:center;font-weight:800;font-size:1.3rem;color:var(--muted)}
@@ -66,44 +78,58 @@ input[type=text]:focus{border-color:var(--blue)}
 .feedback{text-align:center;font-size:1.5rem;font-weight:800;min-height:2.4rem;margin-top:12px}
 .feedback.good{color:var(--green)} .feedback.bad{color:var(--red)}
 .lock{text-align:center;color:var(--muted);font-size:.9rem;margin-top:4px}
+/* Handoff */
+.handoff{text-align:center}
+.handoff .av{width:90px;height:90px;border-radius:50%;margin:6px auto 10px;display:flex;align-items:center;justify-content:center;font-size:2.6rem;font-weight:800;color:#fff}
+/* Ranking */
+.rankHead{text-align:center}
+.rankHead .cp{font-size:1rem;color:var(--muted);font-weight:700}
+.rankGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.rcol{background:#f3f7ff;border-radius:18px;padding:10px 8px}
+.rcol h3{font-size:1.05rem;text-align:center;margin-bottom:6px;line-height:1.2}
+.rcol.c h3{color:var(--green)} .rcol.s h3{color:var(--blue)}
+.rrow{display:flex;align-items:center;gap:6px;background:#fff;border-radius:12px;padding:6px 8px;margin-bottom:6px;font-size:1rem;line-height:1.15}
+.rrow .pos{width:26px;text-align:center;font-weight:800;flex:none}
+.rrow .nm{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rrow .nm small{display:block;font-weight:600;color:var(--muted);font-size:.72rem}
+.rrow .val{font-weight:800;flex:none;text-align:right}
+.rrow .mv{font-size:.75rem;font-weight:800;flex:none;width:22px;text-align:center}
+.rrow .mv.up{color:var(--green)} .rrow .mv.down{color:var(--red)}
+.rrow.live{border:2px solid var(--blue)}
+.rrow.ghost{opacity:.7;background:#fbfcff}
+.rrow.first{background:#fff6db}
+.rnote{text-align:center;color:var(--muted);font-size:.85rem;margin-top:6px}
+.podium{display:flex;justify-content:center;align-items:flex-end;gap:8px;margin:10px 0 4px}
+.podium div{flex:1;max-width:150px;text-align:center;border-radius:14px 14px 0 0;color:#fff;font-weight:800;padding:8px 4px}
+.podium div small{display:block;font-weight:600;font-size:.8rem}
 /* Results */
-.big{font-size:4rem;font-weight:800;text-align:center;color:var(--blue);line-height:1}
-.stars{text-align:center;font-size:2.4rem;margin:6px 0}
-.delta{text-align:center;font-weight:700;margin-top:4px}
-.delta.up{color:var(--green)} .delta.down{color:var(--red)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.bignum{font-size:3.4rem;font-weight:800;text-align:center;color:var(--blue);line-height:1}
+.stars{text-align:center;font-size:2rem;margin:4px 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
 .stat{background:#f3f7ff;border-radius:16px;padding:10px 6px;text-align:center}
-.stat b{display:block;font-size:1.5rem;line-height:1.2}
-.stat span{font-size:.85rem;color:var(--muted);line-height:1.2;display:block}
-.stat.hl{background:#e6f0ff;border:3px solid var(--blue)}
-.cmp{width:100%;border-collapse:collapse;font-size:1rem}
+.stat b{display:block;font-size:1.4rem;line-height:1.2}
+.stat span{font-size:.82rem;color:var(--muted);line-height:1.2;display:block}
+.cmp{width:100%;border-collapse:collapse;font-size:1rem;margin-top:10px}
 .cmp th,.cmp td{padding:7px 6px;text-align:center;border-bottom:1px solid var(--line)}
 .cmp th{color:var(--muted);font-weight:700;font-size:.9rem}
 .cmp td:first-child,.cmp th:first-child{text-align:left}
-.bands{display:flex;height:34px;border-radius:12px;overflow:hidden;margin:8px 0}
-.bands div{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:.95rem;min-width:0}
-.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.9rem;color:var(--muted)}
-.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:5px;vertical-align:-1px}
-.chart{width:100%;height:auto;display:block;margin-top:6px}
-.tips{list-style:none}
+.tips{list-style:none;margin-top:10px}
 .tips li{background:#fff8e6;border-radius:14px;padding:10px 14px;margin-bottom:8px;line-height:1.45}
 .tips li b{color:#b77800}
-.list div{padding:5px 0;border-bottom:1px dashed var(--line);font-size:1.08rem;display:flex;justify-content:space-between;gap:10px}
+.list{margin-top:10px}
+.list div{padding:5px 0;border-bottom:1px dashed var(--line);font-size:1.05rem;display:flex;justify-content:space-between;gap:10px}
 .list div:last-child{border:none}
-.list .muted{color:var(--muted);font-size:.95rem}
-.scroll{max-height:260px;overflow:auto}
-.tt{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}
-.tt div{border-radius:12px;padding:6px;text-align:center;font-weight:800;color:#fff}
-.tt div small{display:block;font-weight:600;font-size:.75rem;opacity:.9}
-.hist{width:100%;border-collapse:collapse;font-size:.95rem}
-.hist th,.hist td{padding:6px 4px;text-align:center;border-bottom:1px solid var(--line)}
-.hist th{color:var(--muted)}
+.list .muted{color:var(--muted);font-size:.92rem}
+.scroll{max-height:220px;overflow:auto}
+.pname{display:flex;align-items:center;gap:10px;font-size:1.5rem;font-weight:800}
+.pname i{width:16px;height:16px;border-radius:50%}
+details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px}
+.sendStatus{text-align:center;font-weight:700;margin-top:6px;font-size:.95rem;color:var(--muted)}
+.sendStatus.ok{color:var(--green)} .sendStatus.err{color:#b77800}
 .confetti{position:fixed;top:-10px;width:10px;height:14px;z-index:9;animation:fall linear forwards;pointer-events:none}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 .foot{text-align:center;color:var(--muted);font-size:.85rem;margin-top:6px}
-.sendStatus{text-align:center;font-weight:700;margin-top:10px;font-size:1rem;color:var(--muted)}
-.sendStatus.ok{color:var(--green)} .sendStatus.err{color:#b77800}
-@media (max-width:420px){ .stats{grid-template-columns:repeat(2,1fr)} .opt{font-size:1.7rem} }
+@media (max-width:420px){ .stats{grid-template-columns:repeat(2,1fr)} .opt{font-size:1.7rem} .rrow{font-size:.9rem;padding:5px 6px} .rcol{padding:8px 5px} }
 @media print{ body{background:#fff} .btn,.foot{display:none!important} .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid} }
 </style>
 </head>
@@ -114,36 +140,27 @@ input[type=text]:focus{border-color:var(--blue)}
 <div id="start">
  <div class="card">
   <h1>Mental Maths <span>Challenge</span></h1>
-  <p class="sub">Answer each question before the timer runs out!</p>
+  <p class="sub">100 questions: ➕ adding, ➖ taking away, ✖️ times and ➗ sharing.<br>A ranking appears after every 5 questions!</p>
 
-  <label class="title">Your name</label>
-  <input type="text" id="name" placeholder="Type your name" maxlength="20">
-
-  <label class="title">What do you want to practise?</label>
-  <div class="chips" data-group="mode">
-    <button class="chip on" data-v="mix">Mix ➕➖✖️</button>
-    <button class="chip" data-v="add">Adding ➕</button>
-    <button class="chip" data-v="sub">Subtracting ➖</button>
-    <button class="chip" data-v="mul">Times ✖️</button>
+  <label class="title">How many players on this device?</label>
+  <div class="chips" data-group="players">
+    <button class="chip on" data-v="1">1 player</button>
+    <button class="chip" data-v="2">2 players</button>
+    <button class="chip" data-v="3">3 players</button>
+    <button class="chip" data-v="4">4 players</button>
   </div>
 
-  <label class="title">Multiplication level</label>
-  <div class="chips" data-group="mlevel">
-    <button class="chip on" data-v="tables">Times tables (to 12×12)</button>
-    <button class="chip" data-v="big">2-digit × 1-digit</button>
-    <button class="chip" data-v="hard">2-digit × 2-digit</button>
-  </div>
+  <label class="title">What's your name?</label>
+  <div class="names" id="names"></div>
+  <div class="msg" id="nameMsg"></div>
 
-  <label class="title">How many questions?</label>
-  <div class="chips" data-group="count">
-    <button class="chip" data-v="10">10</button>
-    <button class="chip on" data-v="20">20</button>
-    <button class="chip" data-v="50">50</button>
-    <button class="chip" data-v="100">100</button>
-    <button class="chip" data-v="250">250</button>
-    <button class="chip" data-v="500">500</button>
-    <button class="chip" data-v="1000">1000</button>
+  <label class="title">Level</label>
+  <div class="chips" data-group="level">
+    <button class="chip" data-v="easy">Easy 🌱</button>
+    <button class="chip on" data-v="medium">Medium 🚀</button>
+    <button class="chip" data-v="hard">Hard 🔥</button>
   </div>
+  <p class="sub" id="levelInfo" style="text-align:left;margin:6px 0 0;font-size:.92rem"></p>
 
   <label class="title">How do you answer?</label>
   <div class="chips" data-group="input">
@@ -165,21 +182,36 @@ input[type=text]:focus{border-color:var(--blue)}
     <button class="chip" data-v="off">Off 🔇</button>
   </div>
 
-  <div class="rules">📋 <b>Test rules:</b> once you start, there is no pause, no skipping and no stopping early, just like the real test. If the timer runs out, that question is lost. Press <b>Submit</b> at the end to see your results.</div>
+  <label class="check"><input type="checkbox" id="ghosts" checked> Race against past players' best scores on this device 👻</label>
 
-  <button class="btn big" id="go">Start the test 🚀</button>
+  <div class="rules">📋 <b>How it works:</b> everyone answers 100 questions, 5 at a time. With more than one player, you take turns: each player does 5 questions, then passes the device. After every 5 questions the <b>ranking</b> shows who's top for 🎯 <b>correct answers</b> and who's top for ⚡ <b>speed</b>. No pausing and no skipping. If the timer runs out, that question is lost.</div>
+
+  <button class="btn big" id="go">Start the challenge 🚀</button>
   <p class="best" id="bestLine"></p>
  </div>
 </div>
 
+<!-- HANDOFF SCREEN -->
+<div id="handoff" class="hidden">
+  <div class="card handoff">
+    <p class="sub" id="hoRound" style="margin:0">Round 1 of 20</p>
+    <div class="av" id="hoAv">A</div>
+    <h1 id="hoName">Name</h1>
+    <p class="sub">It's your turn! Get ready for 5 questions.</p>
+    <button class="btn big" id="hoGo">I'm ready! ▶️</button>
+  </div>
+</div>
+
 <!-- GAME SCREEN -->
 <div id="game" class="hidden">
+  <div class="who" id="gWho"></div>
   <div class="top">
-    <div class="pill">Question <b id="qNum">1</b> / <span id="qTot">20</span></div>
+    <div class="pill">Question <b id="qNum">1</b> / <span id="qTot">100</span></div>
     <div class="pill">✅ <b id="score">0</b></div>
     <div class="pill">🔥 <b id="streak">0</b></div>
   </div>
   <div class="progress"><i id="prog"></i></div>
+  <div class="dots" id="dots"></div>
   <div class="card">
     <div class="timer"><i id="bar"></i></div>
     <div class="secs" id="secs">15</div>
@@ -192,15 +224,31 @@ input[type=text]:focus{border-color:var(--blue)}
     </div>
     <div class="feedback" id="fb"></div>
   </div>
-  <p class="lock">🔒 Test in progress: keep going until the last question!</p>
+  <p class="lock">🔒 Keep going! The ranking appears after every 5 questions.</p>
+</div>
+
+<!-- RANKING SCREEN -->
+<div id="ranking" class="hidden">
+  <div class="card">
+    <div class="rankHead">
+      <h1 id="rkTitle">🏆 Ranking</h1>
+      <div class="cp" id="rkCp">After 5 of 100 questions</div>
+    </div>
+    <div class="rankGrid">
+      <div class="rcol c"><h3>🎯 Most correct</h3><div id="rkC"></div></div>
+      <div class="rcol s"><h3>⚡ Fastest</h3><div id="rkS"></div></div>
+    </div>
+    <p class="rnote" id="rkNote"></p>
+    <button class="btn big" id="rkGo">Next 5 ▶️</button>
+  </div>
 </div>
 
 <!-- SUBMIT SCREEN -->
 <div id="submitScreen" class="hidden">
   <div class="card" style="text-align:center">
     <div style="font-size:4rem">🏁</div>
-    <h1>All done<span id="doneName"></span>!</h1>
-    <p class="sub">You answered every question. Press Submit to see your results.</p>
+    <h1>All 100 done!</h1>
+    <p class="sub">Press Submit to see the final results.</p>
     <button class="btn big" id="submitTest">Submit ✅</button>
   </div>
 </div>
@@ -208,96 +256,19 @@ input[type=text]:focus{border-color:var(--blue)}
 <!-- RESULTS SCREEN -->
 <div id="results" class="hidden">
   <div class="card">
-    <h1 id="resTitle">Well done!</h1>
-    <div class="stars" id="stars"></div>
-    <div class="big" id="pct">0%</div>
-    <p class="sub" id="resSub" style="margin-bottom:4px"></p>
-    <div class="delta" id="delta"></div>
-    <div class="sendStatus" id="sendStatus"></div>
-  </div>
-
-  <div class="card">
-    <h2>⏱️ Speed</h2>
-    <div class="stats">
-      <div class="stat hl"><b id="sAvgAll">0s</b><span>Average time per question</span></div>
-      <div class="stat"><b id="sAvgRight">–</b><span>Average time when correct</span></div>
-      <div class="stat"><b id="sTotal">0s</b><span>Total test time</span></div>
-      <div class="stat"><b id="sFast">–</b><span>Fastest answer</span></div>
-      <div class="stat"><b id="sSlow">–</b><span>Slowest answer</span></div>
-      <div class="stat"><b id="sPerMin">–</b><span>Correct answers per minute</span></div>
+    <h1>🏆 Final ranking</h1>
+    <div class="podium" id="podium"></div>
+    <div class="rankGrid">
+      <div class="rcol c"><h3>🎯 Most correct</h3><div id="frC"></div></div>
+      <div class="rcol s"><h3>⚡ Fastest</h3><div id="frS"></div></div>
     </div>
+    <p class="rnote" id="frNote"></p>
   </div>
-
-  <div class="card">
-    <h2>🎯 Accuracy</h2>
-    <div class="stats">
-      <div class="stat"><b id="sRight" style="color:var(--green)">0</b><span>Correct</span></div>
-      <div class="stat"><b id="sWrong" style="color:var(--red)">0</b><span>Wrong</span></div>
-      <div class="stat"><b id="sTime" style="color:var(--amber)">0</b><span>Too slow ⏰</span></div>
-      <div class="stat"><b id="sStreak">0</b><span>Best streak 🔥</span></div>
-      <div class="stat"><b id="sFirst">–</b><span>First half score</span></div>
-      <div class="stat"><b id="sSecond">–</b><span>Second half score</span></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>🧭 Coach's tips for the competition</h2>
-    <ul class="tips" id="tips"></ul>
-  </div>
-
-  <div class="card">
-    <h2>➕ vs ✖️</h2>
-    <table class="cmp" id="cmp"></table>
-  </div>
-
-  <div class="card">
-    <h2>⚡ Speed zones</h2>
-    <div class="bands" id="bands"></div>
-    <div class="legend">
-      <span><i style="background:var(--green)"></i>Lightning (under 3s)</span>
-      <span><i style="background:var(--blue)"></i>Good (3–6s)</span>
-      <span><i style="background:var(--amber)"></i>Slow (6–10s)</span>
-      <span><i style="background:var(--red)"></i>Danger (10s+, wrong or timed out)</span>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>📈 Time on each question</h2>
-    <div id="timeChart"></div>
-    <div class="legend" style="margin-top:6px">
-      <span><i style="background:var(--green)"></i>Correct</span>
-      <span><i style="background:var(--red)"></i>Wrong</span>
-      <span><i style="background:var(--amber)"></i>Timed out</span>
-    </div>
-  </div>
-
-  <div class="card" id="ttCard">
-    <h2>✖️ Times-table check</h2>
-    <p class="sub" style="text-align:left;margin:0 0 8px">How each number did in multiplication questions. Red and amber numbers need practice this week.</p>
-    <div class="tt" id="tt"></div>
-  </div>
-
-  <div class="card" id="slowCard">
-    <h2>🐢 Correct but slow: practise for speed</h2>
-    <div class="list" id="slowList"></div>
-  </div>
-
-  <div class="card" id="reviewCard">
-    <h2>💪 Let's practise these again</h2>
-    <div class="list scroll" id="review"></div>
-  </div>
-
-  <div class="card">
-    <h2>🗓️ My progress</h2>
-    <div id="histChart"></div>
-    <div class="scroll" style="margin-top:8px"><table class="hist" id="hist"></table></div>
-  </div>
-
-  <button class="btn" id="retryMistakes">Practise my mistakes</button>
-  <button class="btn alt" id="again">New test (fresh questions)</button>
+  <div id="playerCards"></div>
+  <button class="btn alt" id="again">Play again (same players, new questions)</button>
   <button class="btn ghost" id="printBtn">🖨️ Print / save results</button>
-  <button class="btn ghost" id="home">Change settings</button>
-  <p class="foot">Results are emailed to your teacher and saved on this device.</p>
+  <button class="btn ghost" id="home">New players / change settings</button>
+  <p class="foot">Results are emailed to the teacher and saved on this device.</p>
 </div>
 
 <p class="foot" id="kb">Keyboard: press 1–4 to choose • Enter to submit a typed answer</p>
@@ -309,26 +280,55 @@ input[type=text]:focus{border-color:var(--blue)}
   const $ = id => document.getElementById(id);
   function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
   function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  const TOTAL=100, RS=5;
+  const COLORS=["#3d7bff","#ff8a3d","#8a5cff","#13b8a6"];
+  const OPS=["+","−","×","÷"];
+  const OPNAME={"+":"Adding","−":"Taking away","×":"Times","÷":"Sharing"};
+  const OPCOL={"+":"var(--blue)","−":"var(--orange)","×":"var(--purple)","÷":"var(--teal)"};
+  const LEVELINFO={
+    easy:"➕➖ numbers up to 20 • ✖️➗ times tables 2–10",
+    medium:"➕➖ two 2-digit numbers • ✖️➗ times tables 2–12",
+    hard:"➕➖ 3-digit and 2-digit numbers • ✖️➗ 2-digit by 1-digit"
+  };
 
   // ---------- Settings ----------
-  const settings = {mode:"mix", mlevel:"tables", count:20, input:"choice", time:15, sound:"on"};
+  const settings={players:1, level:"medium", input:"choice", time:15, sound:"on"};
+  let savedNames=[]; try{ savedNames=JSON.parse(load("mm_names")||"[]"); }catch(e){}
+  if(!savedNames.length){ const o=load("mm_name"); if(o) savedNames=[o]; }
+
+  function drawNameInputs(){
+    const box=$("names"), old=[...box.querySelectorAll("input")].map(i=>i.value);
+    box.innerHTML="";
+    for(let i=0;i<settings.players;i++){
+      const v = old[i]!==undefined ? old[i] : (savedNames[i]||"");
+      const row=document.createElement("div"); row.className="nrow";
+      row.innerHTML='<b style="background:'+COLORS[i]+'">'+(i+1)+'</b><input type="text" maxlength="16" placeholder="'+(settings.players>1?"Player "+(i+1)+"'s name":"Type your name")+'" value="'+esc(v)+'">';
+      box.appendChild(row);
+    }
+    $("nameMsg").textContent="";
+  }
   document.querySelectorAll(".chips").forEach(group=>{
     group.addEventListener("click", e=>{
-      const b = e.target.closest(".chip"); if(!b) return;
+      const b=e.target.closest(".chip"); if(!b) return;
       group.querySelectorAll(".chip").forEach(c=>c.classList.remove("on"));
       b.classList.add("on");
-      const key = group.dataset.group, v = b.dataset.v;
-      settings[key] = (key==="count"||key==="time") ? parseInt(v,10) : v;
+      const key=group.dataset.group, v=b.dataset.v;
+      settings[key]=(key==="players"||key==="time")?parseInt(v,10):v;
+      if(key==="players") drawNameInputs();
+      if(key==="level") $("levelInfo").textContent=LEVELINFO[v];
     });
   });
-  const savedName = load("mm_name"); if(savedName) $("name").value = savedName;
+  drawNameInputs();
+  $("levelInfo").textContent=LEVELINFO[settings.level];
 
-  function getHistory(){ try{ return JSON.parse(load("mm_history")||"[]"); }catch(e){ return []; } }
+  function getRuns(){ try{ return JSON.parse(load("mm_runs")||"[]"); }catch(e){ return []; } }
   function showBest(){
-    const h=getHistory();
-    if(!h.length){ $("bestLine").textContent=""; return; }
-    const best=h.reduce((a,b)=>b.pct>a.pct?b:a);
-    $("bestLine").textContent = "⭐ Best so far: "+best.pct+"% ("+best.score+"/"+best.n+") • Tests taken: "+h.length;
+    const runs=getRuns().filter(r=>r.n===TOTAL);
+    if(!runs.length){ $("bestLine").textContent=""; return; }
+    const b=runs.reduce((a,c)=>(c.score>a.score||(c.score===a.score&&c.avg<a.avg))?c:a);
+    $("bestLine").textContent="⭐ Top score on this device: "+b.name+" with "+b.score+"/100 • Games played: "+runs.length;
   }
   showBest();
 
@@ -337,7 +337,7 @@ input[type=text]:focus{border-color:var(--blue)}
   function beep(freq,dur,type){
     if(settings.sound!=="on") return;
     try{
-      actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+      actx=actx||new (window.AudioContext||window.webkitAudioContext)();
       const o=actx.createOscillator(), g=actx.createGain();
       o.type=type||"sine"; o.frequency.value=freq;
       g.gain.setValueAtTime(.15,actx.currentTime);
@@ -348,100 +348,159 @@ input[type=text]:focus{border-color:var(--blue)}
   const sRight=()=>{ beep(660,.12); setTimeout(()=>beep(880,.15),110); };
   const sWrong=()=>beep(200,.3,"square");
   const sTick=()=>beep(1000,.05);
+  const sFanfare=()=>{ [523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.18),i*120)); };
 
   // ---------- Question generation ----------
   const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
-  function makeAdd(){
-    const a=rnd(10,99);
-    const b=Math.random()<0.8 ? rnd(10,99) : rnd(1,9);
-    return Math.random()<.5 ? {a,b,op:"+"} : {a:b,b:a,op:"+"};
+  function pair(){
+    const L=settings.level;
+    if(L==="easy") return [rnd(2,10),rnd(2,10)];
+    if(L==="medium") return [rnd(2,12),rnd(2,12)];
+    return [rnd(11,99),rnd(2,9)];
   }
-  function makeSub(){
-    const a=rnd(20,99);
-    const b=Math.random()<0.8 ? rnd(10,a-1) : rnd(1,9);
-    return {a,b,op:"−"};
-  }
-  function makeMul(){
+  function make(op){
+    const L=settings.level;
     let a,b;
-    if(settings.mlevel==="tables"){ a=rnd(2,12); b=rnd(2,12); }
-    else if(settings.mlevel==="big"){ a=rnd(10,99); b=rnd(2,9); }
-    else { a=rnd(10,99); b=rnd(10,99); }
-    return Math.random()<.5 ? {a,b,op:"×"} : {a:b,b:a,op:"×"};
+    if(op==="+"){
+      if(L==="easy"){ a=rnd(1,20); b=rnd(1,20); }
+      else if(L==="medium"){ a=rnd(10,99); b=rnd(10,99); }
+      else { a=rnd(100,999); b=rnd(10,99); if(Math.random()<.5){ const t=a;a=b;b=t; } }
+      return {a,b,op,ans:a+b};
+    }
+    if(op==="−"){
+      if(L==="easy"){ a=rnd(5,20); b=rnd(1,a); }
+      else if(L==="medium"){ a=rnd(20,99); b=rnd(10,a-1); }
+      else { a=rnd(100,999); b=rnd(10,99); }
+      return {a,b,op,ans:a-b};
+    }
+    const p=pair();
+    if(op==="×"){ if(Math.random()<.5) p.reverse(); return {a:p[0],b:p[1],op,ans:p[0]*p[1]}; }
+    // division: always a whole-number answer
+    return {a:p[0]*p[1],b:p[1],op,ans:p[0]};
   }
-  // Remember the previous round's questions so a new round avoids repeating them
   let recent=new Set();
   try{ recent=new Set(JSON.parse(load("mm_recent")||"[]")); }catch(e){}
   function buildSet(n){
+    // 25 of each operation, shuffled in blocks of 4 so every round has a good mix
     const list=[], seen=new Set();
-    let guard=0;
-    while(list.length<n && guard<n*60){
-      guard++;
-      let q;
-      if(settings.mode==="add") q=makeAdd();
-      else if(settings.mode==="sub") q=makeSub();
-      else if(settings.mode==="mul") q=makeMul();
-      else q=[makeAdd,makeSub,makeMul][list.length%3]();
-      const key=q.a+q.op+q.b;
-      if(seen.has(key) && guard<n*30) continue;
-      if(recent.has(key) && guard<n*15) continue;
-      seen.add(key);
-      q.ans = q.op==="+" ? q.a+q.b : q.op==="−" ? q.a-q.b : q.a*q.b;
-      list.push(q);
+    for(let i=0;i<n;i++){
+      const op=OPS[i%4];
+      let q, guard=0;
+      do{ q=make(op); guard++; }
+      while(guard<40 && (seen.has(q.a+op+q.b) || (guard<20 && recent.has(q.a+op+q.b))));
+      seen.add(q.a+op+q.b); list.push(q);
     }
-    recent=new Set(list.map(q=>q.a+q.op+q.b));
-    store("mm_recent", JSON.stringify([...recent].slice(0,1000)));
-    for(let i=list.length-1;i>0;i--){const j=rnd(0,i);[list[i],list[j]]=[list[j],list[i]];}
+    for(let s=0;s<list.length;s+=4){
+      for(let i=Math.min(s+3,list.length-1);i>s;i--){ const j=rnd(s,i); [list[i],list[j]]=[list[j],list[i]]; }
+    }
     return list;
   }
   function distractors(q){
     const s=new Set([q.ans]), ans=q.ans, c=[];
     if(q.op==="+"||q.op==="−"){
       c.push(ans+1,ans-1,ans+10,ans-10,ans+2,ans-2,ans+11,ans-9);
-      if(q.op==="−") c.push(q.a+q.b, Math.abs((q.a%10)-(q.b%10))+(Math.floor(q.a/10)-Math.floor(q.b/10))*10);
       const r=parseInt(String(ans).split("").reverse().join(""),10); if(r!==ans) c.push(r);
+    }else if(q.op==="×"){
+      c.push(ans+q.a,ans-q.a,ans+q.b,ans-q.b,ans+1,ans-1,ans+10,ans-10);
     }else{
-      c.push(ans+q.a,ans-q.a,ans+q.b,ans-q.b,ans+1,ans-1,ans+10,ans-10,(q.a+1)*q.b,q.a*(q.b-1));
+      c.push(ans+1,ans-1,ans+2,ans-2,q.b,ans+10);
     }
     const out=[];
-    c.sort(()=>Math.random()-.5).forEach(v=>{ if(out.length<3 && v>0 && !s.has(v)){s.add(v);out.push(v);} });
-    while(out.length<3){ const v=ans+rnd(-15,15); if(v>0&&!s.has(v)){s.add(v);out.push(v);} }
+    c.sort(()=>Math.random()-.5).forEach(v=>{ if(out.length<3 && v>=0 && !s.has(v)){ s.add(v); out.push(v); } });
+    let g=0; while(out.length<3 && g<200){ g++; const v=ans+rnd(-12,12); if(v>=0&&!s.has(v)){ s.add(v); out.push(v); } }
     const all=[ans,...out]; all.sort(()=>Math.random()-.5);
     return all;
   }
 
   // ---------- Game state ----------
-  let qs=[], idx=0, score=0, streak=0, bestStreak=0, log=[], practiceRun=false;
-  let timeLeft=0, timer=null, locked=false, qStart=0, lastTick=0, inTest=false;
+  let players=[], cur=0, turnEnd=0, practiceRun=false, inTest=false;
+  let timeLeft=0, timer=null, locked=false, qStart=0, lastTick=0;
 
   function show(id){
-    ["start","game","submitScreen","results"].forEach(s=>$(s).classList.toggle("hidden",s!==id));
+    ["start","handoff","game","ranking","submitScreen","results"].forEach(s=>$(s).classList.toggle("hidden",s!==id));
     $("kb").classList.toggle("hidden",id!=="game");
     window.scrollTo(0,0);
   }
   window.addEventListener("beforeunload",e=>{ if(inTest){ e.preventDefault(); e.returnValue=""; } });
 
-  function startGame(list){
-    const nm=$("name").value.trim(); if(nm) store("mm_name",nm);
-    practiceRun=!!list;
-    qs = list || buildSet(settings.count);
-    idx=0;score=0;streak=0;bestStreak=0;log=[];
-    $("qTot").textContent=qs.length;
+  function readNames(){
+    const inputs=[...$("names").querySelectorAll("input")];
+    let okAll=true; const names=[];
+    inputs.forEach(inp=>{
+      const v=inp.value.trim().replace(/\s+/g," ");
+      inp.classList.toggle("err",!v);
+      if(!v) okAll=false;
+      names.push(v);
+    });
+    if(!okAll){ $("nameMsg").textContent="Please type a name for every player 🙂"; const f=inputs.find(i=>!i.value.trim()); if(f) f.focus(); return null; }
+    const lower=names.map(n=>n.toLowerCase());
+    if(new Set(lower).size!==lower.length){ $("nameMsg").textContent="Each player needs a different name."; return null; }
+    $("nameMsg").textContent="";
+    return names;
+  }
+
+  function newPlayer(name,i,qs){
+    return {name, color:COLORS[i%4], qs, idx:0, log:[], score:0, streak:0, best:0, totalT:0, cp:[], prevC:null, prevS:null};
+  }
+
+  function startGame(names, practiceList){
+    practiceRun=!!practiceList;
+    if(!practiceRun){ savedNames=names; store("mm_names",JSON.stringify(names)); }
+    const used=new Set();
+    players=names.map((n,i)=>{
+      const qs=practiceList?practiceList.slice():buildSet(TOTAL);
+      qs.forEach(q=>used.add(q.a+q.op+q.b));
+      return newPlayer(n,i,qs);
+    });
+    if(!practiceRun){ recent=used; store("mm_recent",JSON.stringify([...used].slice(0,800))); }
+    cur=0; inTest=true;
     $("opts").classList.toggle("hidden",settings.input!=="choice");
     $("typebox").classList.toggle("hidden",settings.input!=="type");
-    inTest=true;
+    beginTurn();
+  }
+
+  function totalRounds(){ return Math.ceil(players[0].qs.length/RS); }
+
+  function beginTurn(){
+    const p=players[cur];
+    if(players.length>1){
+      $("hoRound").textContent="Round "+(Math.floor(p.idx/RS)+1)+" of "+totalRounds();
+      $("hoAv").textContent=p.name.charAt(0).toUpperCase();
+      $("hoAv").style.background=p.color;
+      $("hoName").textContent=p.name;
+      show("handoff");
+    }else playTurn();
+  }
+  $("hoGo").onclick=()=>playTurn();
+
+  function playTurn(){
+    const p=players[cur];
+    turnEnd=Math.min(p.idx+RS,p.qs.length);
+    $("gWho").innerHTML=players.length>1?'<span style="color:'+p.color+'">●</span> '+esc(p.name)+"'s turn":"Go, "+esc(p.name)+"! 💪";
+    $("qTot").textContent=p.qs.length;
     show("game"); nextQ();
   }
 
+  function drawDots(){
+    const p=players[cur], start=turnEnd-((turnEnd-1)%RS)-1, n=turnEnd-start;
+    let h="";
+    for(let i=0;i<n;i++){
+      const k=start+i, r=p.log[k];
+      h+='<i class="'+(r?(r.ok?"ok":"no"):(k===p.idx?"cur":""))+'"></i>';
+    }
+    $("dots").innerHTML=h;
+  }
+
   function nextQ(){
-    if(idx>=qs.length){ endTest(); return; }
+    const p=players[cur];
+    if(p.idx>=turnEnd){ turnDone(); return; }
     locked=false;
-    const q=qs[idx];
-    $("qNum").textContent=idx+1; $("score").textContent=score; $("streak").textContent=streak;
-    $("prog").style.width=(idx/qs.length*100)+"%";
+    const q=p.qs[p.idx];
+    $("qNum").textContent=p.idx+1; $("score").textContent=p.score; $("streak").textContent=p.streak;
+    $("prog").style.width=(p.idx/p.qs.length*100)+"%";
+    drawDots();
     $("question").textContent=q.a+" "+q.op+" "+q.b;
-    const tag=$("tag");
-    tag.textContent = q.op==="+" ? "Adding" : q.op==="−" ? "Subtracting" : "Times";
-    tag.style.background = q.op==="+" ? "var(--blue)" : q.op==="−" ? "var(--teal)" : "var(--purple)";
+    const tag=$("tag"); tag.textContent=OPNAME[q.op]; tag.style.background=OPCOL[q.op];
     $("fb").textContent=""; $("fb").className="feedback";
     if(settings.input==="choice"){
       const box=$("opts"); box.innerHTML="";
@@ -451,9 +510,7 @@ input[type=text]:focus{border-color:var(--blue)}
         b.onclick=()=>answer(v);
         box.appendChild(b);
       });
-    }else{
-      $("typed").value=""; setTimeout(()=>$("typed").focus(),30);
-    }
+    }else{ $("typed").value=""; setTimeout(()=>$("typed").focus(),30); }
     timeLeft=settings.time; qStart=performance.now(); lastTick=Math.ceil(timeLeft);
     drawTimer(); clearInterval(timer); timer=setInterval(tick,100);
   }
@@ -461,37 +518,37 @@ input[type=text]:focus{border-color:var(--blue)}
   function drawTimer(){
     const pct=Math.max(0,timeLeft/settings.time*100);
     const bar=$("bar"); bar.style.width=pct+"%";
-    bar.style.background = pct>50?"var(--green)":pct>25?"var(--amber)":"var(--red)";
+    bar.style.background=pct>50?"var(--green)":pct>25?"var(--amber)":"var(--red)";
     $("secs").textContent=Math.max(0,Math.ceil(timeLeft));
     $("secs").classList.toggle("low",timeLeft<=5);
   }
   function tick(){
     if(locked) return;
-    // use real elapsed time so the clock stays honest even if the phone lags
-    timeLeft = settings.time - (performance.now()-qStart)/1000;
+    timeLeft=settings.time-(performance.now()-qStart)/1000;
     const s=Math.ceil(timeLeft);
     if(s<lastTick && s<=5 && s>0) sTick();
-    lastTick=s;
-    drawTimer();
+    lastTick=s; drawTimer();
     if(timeLeft<=0) answer(null);
   }
 
   function answer(v){
     if(locked) return;
     locked=true; clearInterval(timer);
-    const q=qs[idx];
+    const p=players[cur], q=p.qs[p.idx];
     const used=Math.min(settings.time,(performance.now()-qStart)/1000);
-    const ok = v!==null && Number(v)===q.ans;
-    log.push({a:q.a,b:q.b,op:q.op,ans:q.ans,given:v,ok:ok,timeout:v===null,t:v===null?settings.time:used});
+    const ok=v!==null && Number(v)===q.ans;
+    const t=v===null?settings.time:used;
+    p.log.push({a:q.a,b:q.b,op:q.op,ans:q.ans,given:v,ok,timeout:v===null,t});
+    p.totalT+=t;
     const fb=$("fb");
     if(ok){
-      score++; streak++; bestStreak=Math.max(bestStreak,streak);
+      p.score++; p.streak++; p.best=Math.max(p.best,p.streak);
       const cheers=["Great job! 🎉","Super! ⭐","Brilliant! 🌟","Correct! ✅","Amazing! 🚀","You rock! 💪"];
-      fb.textContent = streak>=5 && streak%5===0 ? "🔥 "+streak+" in a row!" : cheers[rnd(0,cheers.length-1)];
+      fb.textContent=p.streak>=5&&p.streak%5===0?"🔥 "+p.streak+" in a row!":cheers[rnd(0,cheers.length-1)];
       fb.className="feedback good"; sRight();
     }else{
-      streak=0;
-      fb.textContent = v===null ? "⏰ Time's up! It was "+q.ans : "Oops! "+q.a+" "+q.op+" "+q.b+" = "+q.ans;
+      p.streak=0;
+      fb.textContent=v===null?"⏰ Time's up! It was "+q.ans:"Oops! "+q.a+" "+q.op+" "+q.b+" = "+q.ans;
       fb.className="feedback bad"; sWrong();
     }
     if(settings.input==="choice"){
@@ -502,17 +559,14 @@ input[type=text]:focus{border-color:var(--blue)}
         else b.classList.add("dim");
       });
     }
-    $("score").textContent=score; $("streak").textContent=streak;
-    setTimeout(()=>{ idx++; nextQ(); }, ok?700:1800);
+    $("score").textContent=p.score; $("streak").textContent=p.streak;
+    p.idx++; drawDots();
+    setTimeout(nextQ, ok?700:1800);
   }
 
-  function submitTyped(){
-    const t=$("typed").value.trim();
-    if(t==="") return;
-    answer(parseInt(t,10));
-  }
+  function submitTyped(){ const t=$("typed").value.trim(); if(t==="") return; answer(parseInt(t,10)); }
   $("submitTyped").onclick=submitTyped;
-  $("typed").addEventListener("keydown",e=>{ if(e.key==="Enter"){e.preventDefault();submitTyped();} });
+  $("typed").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); submitTyped(); } });
   $("typed").addEventListener("input",e=>{ e.target.value=e.target.value.replace(/[^0-9]/g,""); });
   document.addEventListener("keydown",e=>{
     if($("game").classList.contains("hidden")) return;
@@ -522,245 +576,221 @@ input[type=text]:focus{border-color:var(--blue)}
     }
   });
 
-  function endTest(){
+  function turnDone(){
     clearInterval(timer);
-    $("prog").style.width="100%";
-    const nm=$("name").value.trim();
-    $("doneName").textContent = nm ? ", "+nm : "";
-    show("submitScreen");
+    const p=players[cur];
+    p.cp.push([p.score,+p.totalT.toFixed(2)]);
+    cur++;
+    if(cur<players.length){ beginTurn(); return; }
+    cur=0;
+    showRanking();
   }
-  $("submitTest").onclick=()=>{ inTest=false; showResults(); };
 
-  // ---------- Results ----------
+  // ---------- Ranking ----------
   const fmt=s=>s<10?s.toFixed(1)+"s":Math.round(s)+"s";
   const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
   const pctOf=(r,n)=>n?Math.round(r/n*100):0;
-  const isCarry=q=>q.op==="+" && ((q.a%10)+(q.b%10))>=10;
-  const isBorrow=q=>q.op==="−" && (q.a%10)<(q.b%10);
-  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  function ghostEntries(done){
+    if(practiceRun || !$("ghosts").checked) return [];
+    const k=Math.ceil(done/RS)-1;
+    const live=new Set(players.map(p=>p.name.toLowerCase()));
+    const best={};
+    getRuns().forEach(r=>{
+      if(r.level!==settings.level || r.time!==settings.time || !r.cp || !r.cp[k]) return;
+      const key=r.name.toLowerCase();
+      const fin=r.cp[r.cp.length-1];
+      if(!best[key] || fin[0]>best[key].fin[0] || (fin[0]===best[key].fin[0] && fin[1]<best[key].fin[1])) best[key]={r,fin};
+    });
+    return Object.values(best)
+      .sort((x,y)=>y.fin[0]-x.fin[0]||x.fin[1]-y.fin[1])
+      .slice(0,6)
+      .map(({r})=>({name:r.name, ghost:true, own:live.has(r.name.toLowerCase()), correct:r.cp[k][0], avg:r.cp[k][1]/done, color:"#9aa7c2"}));
+  }
+
+  function rankLists(done){
+    const live=players.map(p=>({p, name:p.name, ghost:false, correct:p.score, avg:p.totalT/Math.max(1,p.idx), color:p.color}));
+    const all=live.concat(ghostEntries(done));
+    const byC=all.slice().sort((x,y)=>y.correct-x.correct||x.avg-y.avg);
+    const byS=all.slice().sort((x,y)=>x.avg-y.avg||y.correct-x.correct);
+    return {all,byC,byS};
+  }
+  const medal=i=>["🥇","🥈","🥉"][i]||(i+1);
+
+  function rowsHTML(list,kind,done,track){
+    return list.map((e,i)=>{
+      let mv="";
+      if(!e.ghost && track){
+        const prev=kind==="c"?e.p.prevC:e.p.prevS;
+        if(prev!==null && prev!==i) mv=prev>i?'<span class="mv up">▲'+(prev-i)+'</span>':'<span class="mv down">▼'+(i-prev)+'</span>';
+        else mv='<span class="mv"></span>';
+      }
+      const val=kind==="c"?e.correct+"/"+done:fmt(e.avg);
+      const sub=e.ghost?(e.own?"👻 your best":"👻 past best"):(kind==="c"?pctOf(e.correct,done)+"%":"per question");
+      return '<div class="rrow'+(e.ghost?" ghost":" live")+(i===0?" first":"")+'">'+
+        '<span class="pos">'+medal(i)+'</span>'+
+        '<span class="nm"><span style="color:'+e.color+'">●</span> '+esc(e.name)+'<small>'+sub+'</small></span>'+
+        mv+'<span class="val">'+val+'</span></div>';
+    }).join("");
+  }
+
+  function showRanking(){
+    const done=players[0].idx, total=players[0].qs.length, finished=done>=total;
+    const {byC,byS,all}=rankLists(done);
+    const track=players.length>1||all.length>1;
+    $("rkC").innerHTML=rowsHTML(byC,"c",done,track);
+    $("rkS").innerHTML=rowsHTML(byS,"s",done,track);
+    // remember positions for the movement arrows
+    byC.forEach((e,i)=>{ if(!e.ghost) e.p.prevC=i; });
+    byS.forEach((e,i)=>{ if(!e.ghost) e.p.prevS=i; });
+    $("rkTitle").textContent=finished?"🏁 Last round done!":"🏆 Ranking";
+    $("rkCp").textContent="After "+done+" of "+total+" questions • Round "+Math.ceil(done/RS)+" of "+totalRounds();
+    const topC=byC[0], topS=byS[0];
+    let note="";
+    if(all.length===1) note="Tick 👻 on the start screen and play again to race your best score!";
+    else note="🎯 "+topC.name+" has the most correct"+(topC.ghost?" (past best)":"")+" • ⚡ "+topS.name+" is the fastest"+(topS.ghost?" (past best)":"");
+    $("rkNote").textContent=note;
+    $("rkGo").textContent=finished?"Finish ✅":"Next 5 ▶️";
+    show("ranking");
+    sFanfare();
+  }
+  $("rkGo").onclick=()=>{
+    if(players[0].idx>=players[0].qs.length){ show("submitScreen"); return; }
+    beginTurn();
+  };
+  $("submitTest").onclick=()=>{ inTest=false; showResults(); };
+
+  // ---------- Results ----------
+  function tipsFor(p){
+    const log=p.log, n=log.length, pct=pctOf(p.score,n), avgAll=p.totalT/Math.max(1,n);
+    const tips=[];
+    const to=log.filter(r=>r.timeout).length;
+    if(to) tips.push("<b>Never leave a blank.</b> "+to+" question"+(to>1?"s":"")+" ran out of time. Make your best guess before the timer hits 0.");
+    const per=OPS.map(op=>{ const a=log.filter(r=>r.op===op); return {op,n:a.length,p:pctOf(a.filter(r=>r.ok).length,a.length),t:avg(a.map(r=>r.t))}; }).filter(o=>o.n>=3);
+    if(per.length>=2){
+      const worst=per.slice().sort((x,y)=>x.p-y.p||y.t-x.t)[0], bestO=per.slice().sort((x,y)=>y.p-x.p)[0];
+      if(bestO.p-worst.p>=10) tips.push("<b>Practise "+OPNAME[worst.op].toLowerCase()+" ("+worst.op+")</b>. It scored "+worst.p+"%, your weakest operation.");
+      const slowest=per.slice().sort((x,y)=>y.t-x.t)[0];
+      if(slowest.t>5) tips.push("<b>Speed up on "+OPNAME[slowest.op].toLowerCase()+"</b>: "+fmt(slowest.t)+" per question.");
+    }
+    if(per.some(o=>o.op==="÷" && o.p<80)) tips.push("<b>Sharing tip:</b> turn it into times. 56 ÷ 8 → what times 8 makes 56? → 7.");
+    if(per.some(o=>o.op==="−" && o.p<80)) tips.push("<b>Taking away tip:</b> count up from the smaller number. 82 − 47 → 47 + 3 = 50, + 32 = 82, so 35.");
+    if(n>=20){
+      const h=Math.ceil(n/2), h1=pctOf(log.slice(0,h).filter(r=>r.ok).length,h), h2=pctOf(log.slice(h).filter(r=>r.ok).length,n-h);
+      if(h2<h1-10) tips.push("<b>Stamina:</b> your score dropped from "+h1+"% to "+h2+"% in the second half. Keep focused right to the end.");
+    }
+    if(avgAll>6) tips.push("<b>Speed goal:</b> average "+fmt(avgAll)+" per question. Aim for under 5 seconds.");
+    if(pct>=90 && avgAll<=5) tips.push("<b>Superstar!</b> 🏆 Try the next level or 10-second mode.");
+    if(!tips.length) tips.push("<b>Keep going!</b> Play every day and watch your ranking climb.");
+    return tips;
+  }
 
   function showResults(){
-    const n=log.length, nm=$("name").value.trim();
-    const pct=pctOf(score,n);
-    const wrong=log.filter(r=>!r.ok&&!r.timeout).length;
-    const timedOut=log.filter(r=>r.timeout).length;
-    const allT=log.map(r=>r.t), rightT=log.filter(r=>r.ok).map(r=>r.t);
-    const totalT=allT.reduce((a,b)=>a+b,0);
-    const answered=log.filter(r=>!r.timeout);
+    const done=players[0].log.length;
+    const {byC,byS}=rankLists(done);
+    $("frC").innerHTML=rowsHTML(byC,"c",done,false);
+    $("frS").innerHTML=rowsHTML(byS,"s",done,false);
+    const liveC=byC.filter(e=>!e.ghost);
+    $("podium").innerHTML=players.length>1?[1,0,2].filter(i=>liveC[i]).map(i=>{
+      const e=liveC[i], h=[110,80,60][i];
+      return '<div style="background:'+e.color+';height:'+h+'px">'+medal(i)+" "+esc(e.name)+'<small>'+e.correct+'/'+done+'</small></div>';
+    }).join(""):"";
+    $("frNote").textContent=practiceRun?"Mistakes practice: not saved to the ranking.":"🎯 = most correct answers • ⚡ = fastest average time per question";
 
-    $("pct").textContent=pct+"%";
-    $("resSub").textContent=score+" out of "+n+" correct"+(practiceRun?" (mistakes practice)":"");
-    $("resTitle").textContent=(pct>=90?"Superstar":pct>=70?"Great work":pct>=50?"Good effort":"Keep practising")+(nm?", "+nm:"")+"! "+(pct>=90?"🏆":pct>=70?"🌟":pct>=50?"👍":"💪");
-    $("stars").textContent=pct>=90?"⭐⭐⭐":pct>=70?"⭐⭐":pct>=40?"⭐":"🌱";
-
-    // speed
-    $("sAvgAll").textContent=fmt(avg(allT));
-    $("sAvgRight").textContent=rightT.length?fmt(avg(rightT)):"–";
-    const mins=Math.floor(totalT/60), secs=Math.round(totalT%60);
-    $("sTotal").textContent=mins?mins+"m "+secs+"s":secs+"s";
-    if(answered.length){
-      const f=answered.reduce((a,b)=>b.t<a.t?b:a), s=answered.reduce((a,b)=>b.t>a.t?b:a);
-      $("sFast").textContent=fmt(f.t); $("sSlow").textContent=fmt(s.t);
-    }else{ $("sFast").textContent="–"; $("sSlow").textContent="–"; }
-    $("sPerMin").textContent=totalT?(score/(totalT/60)).toFixed(1):"–";
-
-    // accuracy
-    $("sRight").textContent=score; $("sWrong").textContent=wrong; $("sTime").textContent=timedOut;
-    $("sStreak").textContent=bestStreak;
-    const half=Math.ceil(n/2), h1=log.slice(0,half), h2=log.slice(half);
-    const h1p=pctOf(h1.filter(r=>r.ok).length,h1.length), h2p=pctOf(h2.filter(r=>r.ok).length,h2.length);
-    $("sFirst").textContent=h1.length?h1p+"%":"–";
-    $("sSecond").textContent=h2.length?h2p+"%":"–";
-
-    // compare with last test
-    const hist=getHistory();
-    const prev=[...hist].reverse().find(h=>!h.practice);
-    const d=$("delta"); d.className="delta"; d.textContent="";
-    if(prev && !practiceRun){
-      const dp=pct-prev.pct, dt=avg(allT)-prev.avg;
-      const parts=[];
-      parts.push(dp===0?"Same score as last time":(dp>0?"▲ "+dp+"% better":"▼ "+(-dp)+"% lower")+" than last time");
-      parts.push(Math.abs(dt)<0.1?"same speed":(dt<0?"▲ "+(-dt).toFixed(1)+"s faster":"▼ "+dt.toFixed(1)+"s slower")+" per question");
-      d.textContent=parts.join(" • ");
-      d.classList.add(dp>=0?"up":"down");
-    }
-
-    // + vs ×
-    const adds=log.filter(r=>r.op==="+"), subs=log.filter(r=>r.op==="−"), muls=log.filter(r=>r.op==="×");
-    const carry=adds.filter(isCarry), noCarry=adds.filter(r=>!isCarry(r));
-    const borrow=subs.filter(isBorrow), noBorrow=subs.filter(r=>!isBorrow(r));
-    const row=(label,arr)=>arr.length?"<tr><td>"+label+"</td><td>"+arr.length+"</td><td>"+pctOf(arr.filter(r=>r.ok).length,arr.length)+"%</td><td>"+fmt(avg(arr.map(r=>r.t)))+"</td><td>"+arr.filter(r=>r.timeout).length+"</td></tr>":"";
-    $("cmp").innerHTML="<tr><th>Type</th><th>Qs</th><th>Correct</th><th>Avg time</th><th>⏰</th></tr>"+
-      row("➕ Adding (all)",adds)+row("&nbsp;&nbsp;↳ no carrying",noCarry)+row("&nbsp;&nbsp;↳ with carrying",carry)+row("➖ Subtracting (all)",subs)+row("&nbsp;&nbsp;↳ no borrowing",noBorrow)+row("&nbsp;&nbsp;↳ with borrowing",borrow)+row("✖️ Times",muls);
-
-    // speed bands
-    const band={g:0,b:0,a:0,r:0};
-    log.forEach(r=>{ if(!r.ok) band.r++; else if(r.t<3) band.g++; else if(r.t<6) band.b++; else if(r.t<10) band.a++; else band.r++; });
-    const bc={g:"var(--green)",b:"var(--blue)",a:"var(--amber)",r:"var(--red)"};
-    $("bands").innerHTML=Object.keys(band).filter(k=>band[k]).map(k=>'<div style="flex:'+band[k]+';background:'+bc[k]+'">'+(band[k]/n>0.06?band[k]:"")+'</div>').join("");
-
-    // time chart (bucketed for long tests)
-    $("timeChart").innerHTML=timeChartSVG(log);
-
-    // times-table check
-    const tt={};
-    muls.forEach(r=>{
-      [r.a,r.b].forEach(x=>{ if(x<=12){ tt[x]=tt[x]||{n:0,ok:0,t:[]}; tt[x].n++; if(r.ok) tt[x].ok++; tt[x].t.push(r.t); } });
-    });
-    const keys=Object.keys(tt).map(Number).sort((a,b)=>a-b);
-    $("ttCard").classList.toggle("hidden",!keys.length);
-    const weakTables=[];
-    $("tt").innerHTML=keys.map(k=>{
-      const o=tt[k], p=pctOf(o.ok,o.n), at=avg(o.t);
-      const col = p<70||at>8 ? "var(--red)" : p<90||at>5 ? "var(--amber)" : "var(--green)";
-      if(col!=="var(--green)" && o.n>=2) weakTables.push({k,p,at});
-      return '<div style="background:'+col+'">'+k+'×<small>'+p+'% • '+fmt(at)+'</small></div>';
-    }).join("");
-    weakTables.sort((x,y)=>x.p-y.p||y.at-x.at);
-
-    // correct but slow
-    const slow=log.filter(r=>r.ok && r.t>=6).sort((a,b)=>b.t-a.t).slice(0,8);
-    $("slowCard").classList.toggle("hidden",!slow.length);
-    $("slowList").innerHTML=slow.map(r=>"<div><span>"+r.a+" "+r.op+" "+r.b+" = "+r.ans+"</span><span class='muted'>"+fmt(r.t)+"</span></div>").join("");
-
-    // mistakes
-    const mistakes=log.filter(r=>!r.ok);
-    $("reviewCard").classList.toggle("hidden",!mistakes.length);
-    $("retryMistakes").classList.toggle("hidden",!mistakes.length);
-    $("review").innerHTML=mistakes.map(m=>"<div><span>"+m.a+" "+m.op+" "+m.b+" = <b>"+m.ans+"</b></span><span class='muted'>"+(m.timeout?"⏰ too slow":"you said "+esc(m.given))+"</span></div>").join("");
-
-    // coach tips
-    const tips=[];
-    const avgAll=avg(allT);
-    if(timedOut>0) tips.push("<b>Never leave a blank.</b> "+timedOut+" question"+(timedOut>1?"s":"")+" ran out of time. If you're stuck, make your best guess before the timer hits 0. A guess might be right, a blank never is.");
-    if(avgAll>6) tips.push("<b>Speed goal:</b> your average was "+fmt(avgAll)+" per question. Aim for under 5 seconds this week by doing a short 20-question test every day.");
-    else if(avgAll>3.5) tips.push("<b>Good pace!</b> Average "+fmt(avgAll)+". Push for under 3.5 seconds to reach lightning speed.");
-    else if(n && pct>=70) tips.push("<b>Lightning fast!</b> Average "+fmt(avgAll)+". Keep accuracy high and don't rush into silly mistakes.");
-    if(carry.length>=3 && noCarry.length>=3){
-      const cp=pctOf(carry.filter(r=>r.ok).length,carry.length), np=pctOf(noCarry.filter(r=>r.ok).length,noCarry.length);
-      const ct=avg(carry.map(r=>r.t)), nt=avg(noCarry.map(r=>r.t));
-      if(cp<np-10 || ct>nt+2) tips.push("<b>Carrying sums are harder for you</b> ("+cp+"% correct, "+fmt(ct)+" each). Try: add the tens first, then the ones. 47 + 38 → 70 + 15 = 85.");
-    }
-    if(borrow.length>=3 && noBorrow.length>=3){
-      const bp=pctOf(borrow.filter(r=>r.ok).length,borrow.length), nbp=pctOf(noBorrow.filter(r=>r.ok).length,noBorrow.length);
-      const bt=avg(borrow.map(r=>r.t)), nbt=avg(noBorrow.map(r=>r.t));
-      if(bp<nbp-10 || bt>nbt+2) tips.push("<b>Borrowing subtractions are harder for you</b> ("+bp+"% correct, "+fmt(bt)+" each). Try counting up: 72 − 48 → 48 + 2 = 50, + 22 = 72, so the answer is 24.");
-    }
-    if(weakTables.length) tips.push("<b>Times tables to revise:</b> "+weakTables.slice(0,3).map(w=>w.k+"×").join(", ")+". Say them out loud each morning and before bed.");
-    {
-      const types=[["adding",adds],["subtracting",subs],["times",muls]].filter(x=>x[1].length>=4).map(x=>[x[0],pctOf(x[1].filter(r=>r.ok).length,x[1].length)]);
-      if(types.length>=2){
-        types.sort((x,y)=>x[1]-y[1]); const lo=types[0], hi=types[types.length-1];
-        if(hi[1]-lo[1]>=15) tips.push("<b>Focus on "+lo[0]+"</b>. It scored "+lo[1]+"% compared with "+hi[1]+"% for "+hi[0]+". Choose that mode on the start screen for extra practice.");
+    const runs=getRuns();
+    $("playerCards").innerHTML=players.map((p,pi)=>{
+      const log=p.log, n=log.length, pct=pctOf(p.score,n);
+      const wrong=log.filter(r=>!r.ok&&!r.timeout).length, to=log.filter(r=>r.timeout).length;
+      const avgAll=p.totalT/Math.max(1,n);
+      const rightT=log.filter(r=>r.ok).map(r=>r.t);
+      const mins=Math.floor(p.totalT/60), secs=Math.round(p.totalT%60);
+      const prev=runs.filter(r=>r.name.toLowerCase()===p.name.toLowerCase() && r.level===settings.level && r.n===n).slice(-1)[0];
+      let delta="";
+      if(prev && !practiceRun){
+        const dp=p.score-prev.score, dt=avgAll-prev.avg;
+        delta=(dp===0?"Same score as last time":(dp>0?"▲ "+dp+" more correct":"▼ "+(-dp)+" fewer correct")+" than last time")+" • "+(Math.abs(dt)<0.1?"same speed":(dt<0?"▲ "+(-dt).toFixed(1)+"s faster":"▼ "+dt.toFixed(1)+"s slower"));
       }
-    }
-    if(n>=20 && h2p<h1p-10) tips.push("<b>Stamina:</b> your score dropped from "+h1p+"% to "+h2p+"% in the second half. Practise longer tests (50+) so you stay sharp to the end.");
-    if(wrong>=3 && answered.length && avg(log.filter(r=>!r.ok&&!r.timeout).map(r=>r.t))<2.5) tips.push("<b>Slow down a tiny bit:</b> most wrong answers were very quick guesses. Take one second to check.");
-    if(pct>=90 && avgAll<=5) tips.push("<b>Competition ready!</b> 🏆 Try 10-second mode or the harder multiplication level to stretch yourself.");
-    if(!tips.length) tips.push("<b>Keep going!</b> Do one test a day until the competition and watch your progress chart climb.");
-    $("tips").innerHTML=tips.map(t=>"<li>"+t+"</li>").join("");
-
-    // email the results
-    if(n){
-      const strip=h=>h.replace(/<[^>]+>/g,"").replace(/&nbsp;/g," ");
-      const line=(label,arr)=>arr.length?arr.length+" questions, "+pctOf(arr.filter(r=>r.ok).length,arr.length)+"% correct, "+fmt(avg(arr.map(r=>r.t)))+" average, "+arr.filter(r=>r.timeout).length+" timed out":"none";
-      const now=new Date();
-      const report={
-        "_subject":"Mental Maths results: "+(nm||"Student")+" "+score+"/"+n+" ("+pct+"%)",
-        "_template":"table",
-        "_captcha":"false",
-        "Name":nm||"(no name entered)",
-        "Date and time":now.toLocaleString(),
-        "Test type":practiceRun?"Practise my mistakes":"New test",
-        "Settings":({mix:"Mix of adding, subtracting and times",add:"Adding only",sub:"Subtracting only",mul:"Times only"})[settings.mode]+" | "+({tables:"Times tables to 12×12",big:"2-digit × 1-digit",hard:"2-digit × 2-digit"})[settings.mlevel]+" | "+(settings.input==="choice"?"Pick an option":"Typed answers")+" | "+settings.time+"s per question",
-        "Score":score+" / "+n+" ("+pct+"%)",
-        "Correct / Wrong / Timed out":score+" / "+wrong+" / "+timedOut,
-        "Average time per question":fmt(avgAll),
-        "Average time when correct":rightT.length?fmt(avg(rightT)):"–",
-        "Total test time":$("sTotal").textContent,
-        "Fastest / Slowest answer":$("sFast").textContent+" / "+$("sSlow").textContent,
-        "Correct answers per minute":$("sPerMin").textContent,
-        "Best streak":String(bestStreak),
-        "First half / Second half score":(h1.length?h1p+"%":"–")+" / "+(h2.length?h2p+"%":"–"),
-        "Change since last test":d.textContent||"First test on this device",
-        "Adding":line("",adds),
-        "Adding without carrying":line("",noCarry),
-        "Adding with carrying":line("",carry),
-        "Subtracting":line("",subs),
-        "Subtracting without borrowing":line("",noBorrow),
-        "Subtracting with borrowing":line("",borrow),
-        "Times":line("",muls),
-        "Times tables to revise":weakTables.length?weakTables.map(w=>w.k+"× ("+w.p+"%, "+fmt(w.at)+")").join(", "):"none",
-        "Correct but slow":slow.length?slow.map(r=>r.a+" "+r.op+" "+r.b+" = "+r.ans+" ("+fmt(r.t)+")").join(" | "):"none",
-        "Mistakes":mistakes.length?mistakes.slice(0,60).map(m=>m.a+" "+m.op+" "+m.b+" = "+m.ans+(m.timeout?" (timed out)":" (said "+m.given+")")).join(" | ")+(mistakes.length>60?" | …and "+(mistakes.length-60)+" more":""):"none",
-        "Coach's tips":tips.map(strip).join(" | ")
+      const opRows=OPS.map(op=>{
+        const a=log.filter(r=>r.op===op); if(!a.length) return "";
+        return "<tr><td>"+op+" "+OPNAME[op]+"</td><td>"+a.length+"</td><td>"+pctOf(a.filter(r=>r.ok).length,a.length)+"%</td><td>"+fmt(avg(a.map(r=>r.t)))+"</td><td>"+a.filter(r=>r.timeout).length+"</td></tr>";
+      }).join("");
+      const mistakes=log.filter(r=>!r.ok);
+      p._tips=tipsFor(p);
+      return '<div class="card" id="pc'+pi+'">'+
+        '<div class="pname"><i style="background:'+p.color+'"></i>'+esc(p.name)+'</div>'+
+        '<div class="stars">'+(pct>=90?"⭐⭐⭐":pct>=70?"⭐⭐":pct>=40?"⭐":"🌱")+'</div>'+
+        '<div class="bignum">'+p.score+'/'+n+'</div>'+
+        '<p class="sub" style="margin:4px 0">'+pct+'% correct'+(delta?'<br><b style="color:'+(delta.startsWith("▲")?"var(--green)":"var(--muted)")+'">'+delta+'</b>':"")+'</p>'+
+        '<div class="sendStatus" id="send'+pi+'"></div>'+
+        '<div class="stats">'+
+          '<div class="stat"><b>'+fmt(avgAll)+'</b><span>Average time per question</span></div>'+
+          '<div class="stat"><b>'+(rightT.length?fmt(avg(rightT)):"–")+'</b><span>Average when correct</span></div>'+
+          '<div class="stat"><b>'+(mins?mins+"m "+secs+"s":secs+"s")+'</b><span>Total time</span></div>'+
+          '<div class="stat"><b style="color:var(--red)">'+wrong+'</b><span>Wrong</span></div>'+
+          '<div class="stat"><b style="color:var(--amber)">'+to+'</b><span>Too slow ⏰</span></div>'+
+          '<div class="stat"><b>'+p.best+'</b><span>Best streak 🔥</span></div>'+
+        '</div>'+
+        '<table class="cmp"><tr><th>Type</th><th>Qs</th><th>Correct</th><th>Avg</th><th>⏰</th></tr>'+opRows+'</table>'+
+        '<ul class="tips">'+p._tips.map(t=>"<li>"+t+"</li>").join("")+'</ul>'+
+        (mistakes.length?'<details><summary>💪 '+mistakes.length+' to practise again</summary><div class="list scroll">'+
+          mistakes.map(m=>"<div><span>"+m.a+" "+m.op+" "+m.b+" = <b>"+m.ans+"</b></span><span class='muted'>"+(m.timeout?"⏰ too slow":"said "+esc(m.given))+"</span></div>").join("")+
+          '</div></details><button class="btn" data-practice="'+pi+'">Practise '+esc(p.name)+"'s mistakes</button>":"")+
+      '</div>';
+    }).join("");
+    document.querySelectorAll("[data-practice]").forEach(b=>{
+      b.onclick=()=>{
+        const p=players[+b.dataset.practice];
+        const list=p.log.filter(r=>!r.ok).map(m=>({a:m.a,b:m.b,op:m.op,ans:m.ans}));
+        startGame([p.name],list);
       };
-      sendReport(report);
-    }
+    });
 
-    // save history
-    if(n){
-      hist.push({d:new Date().toISOString(),n:n,score:score,pct:pct,avg:+avgAll.toFixed(2),to:timedOut,mode:settings.mode,practice:practiceRun});
-      while(hist.length>60) hist.shift();
-      store("mm_history",JSON.stringify(hist));
+    // save runs + email
+    if(!practiceRun){
+      players.forEach(p=>runs.push({name:p.name,level:settings.level,time:settings.time,n:p.log.length,score:p.score,avg:+(p.totalT/Math.max(1,p.log.length)).toFixed(2),cp:p.cp,d:new Date().toISOString()}));
+      while(runs.length>80) runs.shift();
+      store("mm_runs",JSON.stringify(runs));
     }
-    renderHistory(hist);
+    const finalPosC={}, finalPosS={};
+    byC.filter(e=>!e.ghost).forEach((e,i)=>finalPosC[e.name]=i+1);
+    byS.filter(e=>!e.ghost).forEach((e,i)=>finalPosS[e.name]=i+1);
+    players.forEach((p,pi)=>{ if(p.log.length) sendReport(buildReport(p,finalPosC[p.name],finalPosS[p.name]),"send"+pi); });
 
     show("results");
-    if(pct>=70 && n) confetti();
+    if(players.some(p=>pctOf(p.score,p.log.length)>=70)) confetti();
   }
 
-  function timeChartSVG(rows){
-    if(!rows.length) return "";
-    const W=600,H=170,pad=26,maxT=settings.time;
-    let pts=rows.map(r=>({t:r.t,c:r.ok?"#22b573":r.timeout?"#ffb020":"#ff5a5f"}));
-    let note="";
-    if(pts.length>100){
-      const size=Math.ceil(pts.length/100), b=[];
-      for(let i=0;i<rows.length;i+=size){
-        const g=rows.slice(i,i+size), okp=g.filter(r=>r.ok).length/g.length;
-        b.push({t:avg(g.map(r=>r.t)),c:okp>=.9?"#22b573":okp>=.6?"#ffb020":"#ff5a5f"});
-      }
-      pts=b; note='<text x="'+(W-4)+'" y="12" text-anchor="end" font-size="11" fill="#6b7a99">each bar = '+size+' questions</text>';
-    }
-    const bw=(W-pad)/pts.length;
-    let s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Time taken on each question">';
-    [0,5,10,15,20,25,30].filter(v=>v<=maxT).forEach(v=>{
-      const y=H-18-(v/maxT)*(H-30);
-      s+='<line x1="'+pad+'" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="#e3ecfb"/><text x="'+(pad-4)+'" y="'+(y+4)+'" text-anchor="end" font-size="11" fill="#6b7a99">'+v+'s</text>';
-    });
-    pts.forEach((p,i)=>{
-      const h=Math.max(2,(p.t/maxT)*(H-30));
-      s+='<rect x="'+(pad+i*bw+bw*.12)+'" y="'+(H-18-h)+'" width="'+Math.max(1,bw*.76)+'" height="'+h+'" rx="2" fill="'+p.c+'"/>';
-    });
-    s+='<text x="'+pad+'" y="'+(H-3)+'" font-size="11" fill="#6b7a99">Q1</text><text x="'+W+'" y="'+(H-3)+'" text-anchor="end" font-size="11" fill="#6b7a99">Q'+rows.length+'</text>'+note+'</svg>';
-    return s;
-  }
-
-  function renderHistory(hist){
-    const tests=hist.filter(h=>!h.practice).slice(-15);
-    if(tests.length>=2){
-      const W=600,H=150,pad=30,bw=(W-pad)/(tests.length-1||1);
-      let s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Score over recent tests">';
-      [0,50,100].forEach(v=>{ const y=H-20-(v/100)*(H-36); s+='<line x1="'+pad+'" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="#e3ecfb"/><text x="'+(pad-4)+'" y="'+(y+4)+'" text-anchor="end" font-size="11" fill="#6b7a99">'+v+'%</text>'; });
-      const xy=tests.map((h,i)=>[pad+i*bw,H-20-(h.pct/100)*(H-36)]);
-      s+='<polyline fill="none" stroke="#3d7bff" stroke-width="3" points="'+xy.map(p=>p.join(",")).join(" ")+'"/>';
-      xy.forEach((p,i)=>{ s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="5" fill="#3d7bff"/>'; if(i===xy.length-1) s+='<text x="'+Math.min(p[0],W-20)+'" y="'+(p[1]-10)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#1d2a44">'+tests[i].pct+'%</text>'; });
-      s+='<text x="'+pad+'" y="'+(H-3)+'" font-size="11" fill="#6b7a99">older</text><text x="'+W+'" y="'+(H-3)+'" text-anchor="end" font-size="11" fill="#6b7a99">latest</text></svg>';
-      $("histChart").innerHTML=s;
-    }else{
-      $("histChart").innerHTML='<p class="sub" style="text-align:left;margin:0">Take a few more tests to see your progress line here.</p>';
-    }
-    const rows=[...hist].reverse().slice(0,15);
-    $("hist").innerHTML="<tr><th>Date</th><th>Qs</th><th>Score</th><th>Avg time</th><th>⏰</th></tr>"+rows.map(h=>{
-      const dt=new Date(h.d);
-      const ds=dt.toLocaleDateString(undefined,{day:"numeric",month:"short"})+" "+dt.toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit"});
-      return "<tr><td>"+ds+(h.practice?" 🔁":"")+"</td><td>"+h.n+"</td><td>"+h.pct+"%</td><td>"+fmt(h.avg)+"</td><td>"+(h.to||0)+"</td></tr>";
-    }).join("");
+  function buildReport(p,posC,posS){
+    const log=p.log, n=log.length, pct=pctOf(p.score,n);
+    const strip=h=>h.replace(/<[^>]+>/g,"").replace(/&nbsp;/g," ");
+    const opLine=op=>{ const a=log.filter(r=>r.op===op); return a.length?a.length+" questions, "+pctOf(a.filter(r=>r.ok).length,a.length)+"% correct, "+fmt(avg(a.map(r=>r.t)))+" average, "+a.filter(r=>r.timeout).length+" timed out":"none"; };
+    const mistakes=log.filter(r=>!r.ok);
+    const rounds=p.cp.map((c,i)=>{ const pc=i?p.cp[i-1]:[0,0]; return "R"+(i+1)+": "+(c[0]-pc[0])+"/"+Math.min(RS,n-i*RS)+" in "+fmt(c[1]-pc[1]); }).join(" | ");
+    return {
+      "_subject":"Mental Maths results: "+p.name+" "+p.score+"/"+n+" ("+pct+"%)",
+      "_template":"table","_captcha":"false",
+      "Name":p.name,
+      "Date and time":new Date().toLocaleString(),
+      "Players in this game":players.map(x=>x.name).join(", "),
+      "Ranking (most correct)":posC+" of "+players.length,
+      "Ranking (fastest)":posS+" of "+players.length,
+      "Test type":practiceRun?"Practise my mistakes":"100-question challenge",
+      "Settings":settings.level+" level | "+(settings.input==="choice"?"Pick an option":"Typed answers")+" | "+settings.time+"s per question",
+      "Score":p.score+" / "+n+" ("+pct+"%)",
+      "Correct / Wrong / Timed out":p.score+" / "+log.filter(r=>!r.ok&&!r.timeout).length+" / "+log.filter(r=>r.timeout).length,
+      "Average time per question":fmt(p.totalT/Math.max(1,n)),
+      "Best streak":String(p.best),
+      "Adding (+)":opLine("+"),
+      "Taking away (−)":opLine("−"),
+      "Times (×)":opLine("×"),
+      "Sharing (÷)":opLine("÷"),
+      "Each round of 5":rounds,
+      "Mistakes":mistakes.length?mistakes.slice(0,60).map(m=>m.a+" "+m.op+" "+m.b+" = "+m.ans+(m.timeout?" (timed out)":" (said "+m.given+")")).join(" | "):"none",
+      "Coach's tips":p._tips.map(strip).join(" | ")
+    };
   }
 
   // ---------- Email sending (FormSubmit) ----------
-  // After activating, replace the address below with the private code FormSubmit emails you, to hide the address.
   const MAIL_TO="aahmed.dbs@gmail.com";
   const MAIL_URL="https://formsubmit.co/ajax/"+MAIL_TO;
   function getPending(){ try{ return JSON.parse(load("mm_pending")||"[]"); }catch(e){ return []; } }
@@ -768,15 +798,16 @@ input[type=text]:focus{border-color:var(--blue)}
     return fetch(MAIL_URL,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(r)})
       .then(res=>res.json()).then(j=>{ if(String(j.success)!=="true") throw new Error(j.message||"not sent"); return j; });
   }
-  function sendReport(r){
-    const st=$("sendStatus");
-    st.className="sendStatus"; st.textContent="📧 Sending results to your teacher…";
-    postReport(r).then(()=>{
-      st.className="sendStatus ok"; st.textContent="📧 Results sent ✓";
+  let sendChain=Promise.resolve();
+  function sendReport(r,statusId){
+    const st=$(statusId);
+    if(st){ st.className="sendStatus"; st.textContent="📧 Sending results to the teacher…"; }
+    sendChain=sendChain.then(()=>postReport(r).then(()=>{
+      if(st){ st.className="sendStatus ok"; st.textContent="📧 Results sent ✓"; }
     }).catch(()=>{
       const p=getPending(); p.push(r); while(p.length>20) p.shift(); store("mm_pending",JSON.stringify(p));
-      st.className="sendStatus err"; st.textContent="📧 Couldn't send right now. Results will be sent automatically next time the game is opened online.";
-    });
+      if(st){ st.className="sendStatus err"; st.textContent="📧 Couldn't send right now. Will send automatically next time the game opens online."; }
+    }));
   }
   function flushPending(){
     const p=getPending(); if(!p.length) return;
@@ -795,14 +826,10 @@ input[type=text]:focus{border-color:var(--blue)}
     }
   }
 
-  $("go").onclick=()=>startGame();
-  $("again").onclick=()=>startGame();
-  $("home").onclick=()=>{ showBest(); show("start"); };
+  $("go").onclick=()=>{ const names=readNames(); if(names) startGame(names); };
+  $("again").onclick=()=>startGame(savedNames.slice(0,settings.players));
+  $("home").onclick=()=>{ showBest(); drawNameInputs(); show("start"); };
   $("printBtn").onclick=()=>window.print();
-  $("retryMistakes").onclick=()=>{
-    const list=log.filter(r=>!r.ok).map(m=>({a:m.a,b:m.b,op:m.op,ans:m.ans}));
-    startGame(list);
-  };
 })();
 </script>
 </body>
