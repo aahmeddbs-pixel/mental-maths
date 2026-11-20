@@ -32,20 +32,47 @@ input.err{border-color:var(--red)!important}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font:inherit;font-size:1.05rem;font-weight:700;padding:8px 14px;border-radius:999px;border:3px solid #d5e2f7;background:#fff;color:var(--ink);cursor:pointer}
 .chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
-.btn,.opt,.chip{-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.btn,.opt,.chip,.mode{-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 .btn{font:inherit;font-weight:800;font-size:1.35rem;border:none;border-radius:18px;padding:14px 22px;cursor:pointer;color:#fff;background:var(--green);box-shadow:0 6px 0 #178a56;width:100%;margin-top:18px}
 .btn:active{transform:translateY(3px);box-shadow:0 3px 0 #178a56}
 .btn.alt{background:var(--blue);box-shadow:0 6px 0 #2a5bc4}
+.btn.purple{background:var(--purple);box-shadow:0 6px 0 #6339c9}
 .btn.ghost{background:#fff;color:var(--ink);border:3px solid #d5e2f7;box-shadow:none}
 .btn.big{font-size:1.8rem;padding:20px}
+.btn:disabled{opacity:.5;cursor:default}
 .rules{background:#f3f7ff;border-radius:16px;padding:12px 16px;margin-top:16px;font-size:1rem;line-height:1.5}
 .best{text-align:center;color:var(--muted);margin-top:12px}
 .check{display:flex;align-items:center;gap:8px;margin-top:12px;font-weight:600}
 .check input{width:20px;height:20px}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mode{font:inherit;border:3px solid #d5e2f7;background:#fff;border-radius:18px;padding:12px 8px;cursor:pointer;text-align:center;color:var(--ink)}
+.mode b{display:block;font-size:1.1rem}
+.mode span{font-size:.85rem;color:var(--muted);line-height:1.2;display:block}
+.mode .ic{font-size:1.8rem}
+.mode.on{border-color:var(--blue);background:#eef4ff}
+.joinrow{display:flex;gap:8px;margin-top:8px}
+.joinrow input{text-transform:uppercase;letter-spacing:4px;text-align:center;font-weight:800}
+.joinrow .btn{margin-top:0;width:auto;flex:none;font-size:1.15rem;padding:10px 18px}
+.or{text-align:center;color:var(--muted);font-weight:700;margin:12px 0 0}
+/* Lobby */
+.code{font-size:3.4rem;font-weight:800;letter-spacing:10px;text-align:center;color:var(--purple);background:#f4efff;border-radius:18px;padding:6px 0 0;margin:8px 0}
+.lobbyList{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px;min-height:44px}
+.lobbyList span{background:var(--blue);color:#fff;font-weight:800;padding:6px 14px;border-radius:999px;animation:pop .35s ease-out}
+.lobbyList span.me{outline:3px solid var(--amber)}
+@keyframes pop{0%{transform:scale(.3)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.netErr{background:#fff1f1;color:#b3262b;border-radius:14px;padding:10px 14px;margin-top:10px;font-weight:600}
+/* Countdown */
+#cd{position:fixed;inset:0;z-index:20;background:linear-gradient(135deg,#46178f,#3d7bff);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
+#cd .lbl{font-size:1.4rem;font-weight:700;opacity:.9;text-align:center;padding:0 20px}
+#cd .num{font-size:9rem;font-weight:800;line-height:1;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin:24px 0}
+#cd .num.go{background:var(--green);font-size:6rem}
+#cd .num.anim{animation:zoom .8s ease-out}
+@keyframes zoom{0%{transform:scale(2.2);opacity:0}40%{transform:scale(.9);opacity:1}100%{transform:scale(1)}}
 /* Game */
 .top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .pill{background:#fff;border-radius:999px;padding:6px 14px;font-weight:700;box-shadow:var(--shadow);font-size:1rem}
 .pill b{color:var(--blue)}
+.iconbtn{background:#fff;border:none;border-radius:999px;padding:6px 10px;font-size:1.1rem;box-shadow:var(--shadow);cursor:pointer}
 .who{font-weight:800;font-size:1.2rem;text-align:center;margin-bottom:6px}
 .progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:12px}
 .progress i{display:block;height:100%;width:0;background:var(--blue);transition:width .3s}
@@ -58,15 +85,16 @@ input.err{border-color:var(--red)!important}
 .secs.low{color:var(--red);animation:pulse .5s infinite alternate}
 @keyframes pulse{to{transform:scale(1.15)}}
 .q{font-size:clamp(3rem,14vw,5rem);font-weight:800;text-align:center;margin:10px 0 6px;letter-spacing:2px}
+.q.pop{animation:pop .3s ease-out}
 .tag{font-weight:700;font-size:.95rem;color:#fff;display:inline-block;padding:2px 12px;border-radius:999px}
 .tagwrap{text-align:center}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
 .opt{font:inherit;font-weight:800;font-size:2rem;padding:16px 8px;border-radius:20px;border:none;cursor:pointer;color:#fff;position:relative}
-.opt small{position:absolute;top:6px;left:12px;font-size:.8rem;opacity:.7}
-.opt:nth-child(1){background:#3d7bff;box-shadow:0 6px 0 #2a5bc4}
-.opt:nth-child(2){background:#8a5cff;box-shadow:0 6px 0 #6339c9}
-.opt:nth-child(3){background:#ff8a3d;box-shadow:0 6px 0 #cc6522}
-.opt:nth-child(4){background:#13b8a6;box-shadow:0 6px 0 #0c8a7c}
+.opt small{position:absolute;top:6px;left:12px;font-size:.8rem;opacity:.75}
+.opt:nth-child(1){background:#e21b3c;box-shadow:0 6px 0 #a8122b}
+.opt:nth-child(2){background:#1368ce;box-shadow:0 6px 0 #0c4a94}
+.opt:nth-child(3){background:#d89e00;box-shadow:0 6px 0 #9c7200}
+.opt:nth-child(4){background:#26890c;box-shadow:0 6px 0 #1a6208}
 .opt:active{transform:translateY(3px)}
 .opt.right{background:var(--green)!important;box-shadow:0 6px 0 #178a56!important}
 .opt.wrong{background:var(--red)!important;box-shadow:0 6px 0 #c23a3e!important}
@@ -80,28 +108,35 @@ input.err{border-color:var(--red)!important}
 .lock{text-align:center;color:var(--muted);font-size:.9rem;margin-top:4px}
 /* Handoff */
 .handoff{text-align:center}
-.handoff .av{width:90px;height:90px;border-radius:50%;margin:6px auto 10px;display:flex;align-items:center;justify-content:center;font-size:2.6rem;font-weight:800;color:#fff}
+.av{width:90px;height:90px;border-radius:50%;margin:6px auto 10px;display:flex;align-items:center;justify-content:center;font-size:2.6rem;font-weight:800;color:#fff}
 /* Ranking */
 .rankHead{text-align:center}
 .rankHead .cp{font-size:1rem;color:var(--muted);font-weight:700}
-.rankGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.rcol{background:#f3f7ff;border-radius:18px;padding:10px 8px}
+.rankGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-top:10px}
+.rcol{min-width:0;background:#f3f7ff;border-radius:18px;padding:10px 8px}
 .rcol h3{font-size:1.05rem;text-align:center;margin-bottom:6px;line-height:1.2}
 .rcol.c h3{color:var(--green)} .rcol.s h3{color:var(--blue)}
 .rrow{display:flex;align-items:center;gap:6px;background:#fff;border-radius:12px;padding:6px 8px;margin-bottom:6px;font-size:1rem;line-height:1.15}
-.rrow .pos{width:26px;text-align:center;font-weight:800;flex:none}
-.rrow .nm{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.rrow .nm small{display:block;font-weight:600;color:var(--muted);font-size:.72rem}
-.rrow .val{font-weight:800;flex:none;text-align:right}
-.rrow .mv{font-size:.75rem;font-weight:800;flex:none;width:22px;text-align:center}
+.rrow.anim{animation:slideIn .45s ease-out both}
+@keyframes slideIn{from{transform:translateY(30px) scale(.9);opacity:0}to{transform:none;opacity:1}}
+.rrow .pos{width:24px;text-align:center;font-weight:800;flex:none}
+.rrow .body{flex:1;min-width:0}
+.rrow .nm{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rrow .ln{display:flex;align-items:baseline;gap:4px}
+.rrow .ln small{flex:1;min-width:0;font-weight:600;color:var(--muted);font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rrow .val{font-weight:800;flex:none;text-align:right;font-size:1.05rem}
+.rrow .mv{font-size:.72rem;font-weight:800;flex:none}
 .rrow .mv.up{color:var(--green)} .rrow .mv.down{color:var(--red)}
 .rrow.live{border:2px solid var(--blue)}
+.rrow.me{border:3px solid var(--amber)}
 .rrow.ghost{opacity:.7;background:#fbfcff}
+.rrow.wait{opacity:.6;background:#fbfcff;border:2px dashed #cfd9ee}
 .rrow.first{background:#fff6db}
-.rnote{text-align:center;color:var(--muted);font-size:.85rem;margin-top:6px}
+.rnote{text-align:center;color:var(--muted);font-size:.9rem;margin-top:6px;white-space:pre-line}
 .podium{display:flex;justify-content:center;align-items:flex-end;gap:8px;margin:10px 0 4px}
-.podium div{flex:1;max-width:150px;text-align:center;border-radius:14px 14px 0 0;color:#fff;font-weight:800;padding:8px 4px}
+.podium div{flex:1;max-width:150px;text-align:center;border-radius:14px 14px 0 0;color:#fff;font-weight:800;padding:8px 4px;animation:rise .8s ease-out both;transform-origin:bottom}
 .podium div small{display:block;font-weight:600;font-size:.8rem}
+@keyframes rise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 /* Results */
 .bignum{font-size:3.4rem;font-weight:800;text-align:center;color:var(--blue);line-height:1}
 .stars{text-align:center;font-size:2rem;margin:4px 0}
@@ -129,7 +164,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
 .confetti{position:fixed;top:-10px;width:10px;height:14px;z-index:9;animation:fall linear forwards;pointer-events:none}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 .foot{text-align:center;color:var(--muted);font-size:.85rem;margin-top:6px}
-@media (max-width:420px){ .stats{grid-template-columns:repeat(2,1fr)} .opt{font-size:1.7rem} .rrow{font-size:.9rem;padding:5px 6px} .rcol{padding:8px 5px} }
+@media (max-width:420px){ .stats{grid-template-columns:repeat(2,1fr)} .opt{font-size:1.7rem} .rrow{font-size:.9rem;padding:5px 6px} .rcol{padding:8px 5px} .code{font-size:2.8rem;letter-spacing:7px} }
 @media print{ body{background:#fff} .btn,.foot{display:none!important} .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid} }
 </style>
 </head>
@@ -140,21 +175,43 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
 <div id="start">
  <div class="card">
   <h1>Mental Maths <span>Challenge</span></h1>
-  <p class="sub">100 questions: ➕ adding, ➖ taking away, ✖️ times and ➗ sharing.<br>A ranking appears after every 5 questions!</p>
+  <p class="sub">100 questions: ➕ adding, ➖ taking away, ✖️ times and ➗ dividing.<br>20 seconds per question • a ranking after every 5!</p>
 
-  <label class="title">How many players on this device?</label>
-  <div class="chips" data-group="players">
-    <button class="chip on" data-v="1">1 player</button>
-    <button class="chip" data-v="2">2 players</button>
-    <button class="chip" data-v="3">3 players</button>
-    <button class="chip" data-v="4">4 players</button>
+  <label class="title">How are you playing?</label>
+  <div class="modes">
+    <button class="mode on" data-mode="online"><div class="ic">📱📱</div><b>Each on our own device</b><span>Everyone joins one room and sees the same live ranking</span></button>
+    <button class="mode" data-mode="local"><div class="ic">📱</div><b>On this device</b><span>Play alone, or take turns passing the device</span></button>
   </div>
 
-  <label class="title">What's your name?</label>
-  <div class="names" id="names"></div>
-  <div class="msg" id="nameMsg"></div>
+  <!-- ONLINE -->
+  <div id="onlineBox">
+    <label class="title">What's your name?</label>
+    <input type="text" id="myName" maxlength="16" placeholder="Type your name">
+    <div class="msg" id="onMsg"></div>
+    <button class="btn purple" id="createRoom">Create a room (I'm the host) 🎮</button>
+    <p class="or">or join a friend's room</p>
+    <div class="joinrow">
+      <input type="text" id="joinCode" maxlength="5" placeholder="CODE" autocomplete="off">
+      <button class="btn alt" id="joinRoom">Join ▶️</button>
+    </div>
+  </div>
 
-  <label class="title">Level</label>
+  <!-- LOCAL -->
+  <div id="localBox" class="hidden">
+    <label class="title">How many players on this device?</label>
+    <div class="chips" data-group="players">
+      <button class="chip on" data-v="1">1 player</button>
+      <button class="chip" data-v="2">2 players</button>
+      <button class="chip" data-v="3">3 players</button>
+      <button class="chip" data-v="4">4 players</button>
+    </div>
+    <label class="title">What's your name?</label>
+    <div class="names" id="names"></div>
+    <div class="msg" id="nameMsg"></div>
+    <label class="check"><input type="checkbox" id="ghosts" checked> Race against past players' best scores on this device 👻</label>
+  </div>
+
+  <label class="title" id="lvlTitle">Level (if you're the host)</label>
   <div class="chips" data-group="level">
     <button class="chip" data-v="easy">Easy 🌱</button>
     <button class="chip on" data-v="medium">Medium 🚀</button>
@@ -168,27 +225,37 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
     <button class="chip" data-v="type">Type the answer</button>
   </div>
 
-  <label class="title">Time per question</label>
-  <div class="chips" data-group="time">
-    <button class="chip" data-v="10">10 s</button>
-    <button class="chip on" data-v="15">15 s</button>
-    <button class="chip" data-v="20">20 s</button>
-    <button class="chip" data-v="30">30 s</button>
-  </div>
-
   <label class="title">Sound</label>
   <div class="chips" data-group="sound">
-    <button class="chip on" data-v="on">On 🔊</button>
-    <button class="chip" data-v="off">Off 🔇</button>
+    <button class="chip on" data-v="on">Effects on 🔊</button>
+    <button class="chip" data-v="off">Effects off 🔇</button>
+  </div>
+  <div class="chips" data-group="music" style="margin-top:8px">
+    <button class="chip on" data-v="on">Music on 🎵</button>
+    <button class="chip" data-v="off">Music off</button>
   </div>
 
-  <label class="check"><input type="checkbox" id="ghosts" checked> Race against past players' best scores on this device 👻</label>
+  <div class="rules" id="rulesOnline">📋 <b>How it works:</b> the host creates a room and reads out the 5-letter code. Everyone types the code on their own device. When the host presses Start, a 3-2-1 countdown begins on every screen and everyone gets the <b>same 100 questions</b>. After every 5 questions, all players see the same ranking: 🎯 <b>most correct</b> and ⚡ <b>fastest</b>. You have 20 seconds per question, with no pausing and no skipping.<br><small>The host's level and answer settings are used for everyone.</small></div>
+  <div class="rules hidden" id="rulesLocal">📋 <b>How it works:</b> everyone answers 100 questions, 5 at a time. With more than one player you take turns: each player does 5, then passes the device. After every 5 questions the <b>ranking</b> shows who's top for 🎯 <b>correct answers</b> and ⚡ <b>speed</b>. You have 20 seconds per question, with no pausing and no skipping.</div>
 
-  <div class="rules">📋 <b>How it works:</b> everyone answers 100 questions, 5 at a time. With more than one player, you take turns: each player does 5 questions, then passes the device. After every 5 questions the <b>ranking</b> shows who's top for 🎯 <b>correct answers</b> and who's top for ⚡ <b>speed</b>. No pausing and no skipping. If the timer runs out, that question is lost.</div>
-
-  <button class="btn big" id="go">Start the challenge 🚀</button>
+  <button class="btn big hidden" id="go">Start the challenge 🚀</button>
   <p class="best" id="bestLine"></p>
  </div>
+</div>
+
+<!-- LOBBY -->
+<div id="lobby" class="hidden">
+  <div class="card" style="text-align:center">
+    <p class="sub" style="margin:0">Room code: tell your friends!</p>
+    <div class="code" id="lbCode">-----</div>
+    <h2 style="justify-content:center">👥 Players in the room: <span id="lbCount">0</span></h2>
+    <div class="lobbyList" id="lbList"></div>
+    <p class="sub" id="lbInfo" style="margin-top:12px"></p>
+    <div class="netErr hidden" id="lbErr"></div>
+    <button class="btn big" id="lbStart">Start for everyone 🚀</button>
+    <button class="btn alt hidden" id="lbJump">Jump into the game now ▶️</button>
+    <button class="btn ghost" id="lbLeave">Leave room</button>
+  </div>
 </div>
 
 <!-- HANDOFF SCREEN -->
@@ -209,12 +276,13 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
     <div class="pill">Question <b id="qNum">1</b> / <span id="qTot">100</span></div>
     <div class="pill">✅ <b id="score">0</b></div>
     <div class="pill">🔥 <b id="streak">0</b></div>
+    <button class="iconbtn" id="muteBtn" title="Music on/off">🎵</button>
   </div>
   <div class="progress"><i id="prog"></i></div>
   <div class="dots" id="dots"></div>
   <div class="card">
     <div class="timer"><i id="bar"></i></div>
-    <div class="secs" id="secs">15</div>
+    <div class="secs" id="secs">20</div>
     <div class="tagwrap"><span class="tag" id="tag">Adding</span></div>
     <div class="q" id="question">12 + 34</div>
     <div class="opts" id="opts"></div>
@@ -263,29 +331,37 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
       <div class="rcol s"><h3>⚡ Fastest</h3><div id="frS"></div></div>
     </div>
     <p class="rnote" id="frNote"></p>
+    <button class="btn big purple" id="again">Play again 🔁</button>
+    <p class="rnote" id="againNote"></p>
   </div>
   <div id="playerCards"></div>
-  <button class="btn alt" id="again">Play again (same players, new questions)</button>
   <button class="btn ghost" id="printBtn">🖨️ Print / save results</button>
-  <button class="btn ghost" id="home">New players / change settings</button>
+  <button class="btn ghost" id="home">Back to the start screen</button>
   <p class="foot">Results are emailed to the teacher and saved on this device.</p>
 </div>
 
 <p class="foot" id="kb">Keyboard: press 1–4 to choose • Enter to submit a typed answer</p>
 </div>
 
+<!-- COUNTDOWN OVERLAY -->
+<div id="cd" class="hidden">
+  <div class="lbl" id="cdLbl">Get ready!</div>
+  <div class="num" id="cdNum">3</div>
+  <div class="lbl" id="cdSub">100 new questions</div>
+</div>
+
 <script>
 (function(){
   "use strict";
-  const $ = id => document.getElementById(id);
+  const $=id=>document.getElementById(id);
   function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
   function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-  const TOTAL=100, RS=5;
-  const COLORS=["#3d7bff","#ff8a3d","#8a5cff","#13b8a6"];
+  const TOTAL=100, RS=5, QTIME=20;
+  const COLORS=["#3d7bff","#ff8a3d","#8a5cff","#13b8a6","#e21b3c","#d89e00","#26890c","#c2399b"];
   const OPS=["+","−","×","÷"];
-  const OPNAME={"+":"Adding","−":"Taking away","×":"Times","÷":"Sharing"};
+  const OPNAME={"+":"Adding","−":"Taking away","×":"Times","÷":"Dividing"};
   const OPCOL={"+":"var(--blue)","−":"var(--orange)","×":"var(--purple)","÷":"var(--teal)"};
   const LEVELINFO={
     easy:"➕➖ numbers up to 20 • ✖️➗ times tables 2–10",
@@ -294,64 +370,181 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
   };
 
   // ---------- Settings ----------
-  const settings={players:1, level:"medium", input:"choice", time:15, sound:"on"};
+  const settings={mode:"online", players:1, level:"medium", input:"choice", sound:"on", music:"on"};
   let savedNames=[]; try{ savedNames=JSON.parse(load("mm_names")||"[]"); }catch(e){}
   if(!savedNames.length){ const o=load("mm_name"); if(o) savedNames=[o]; }
+  $("myName").value=load("mm_myname")||savedNames[0]||"";
 
   function drawNameInputs(){
     const box=$("names"), old=[...box.querySelectorAll("input")].map(i=>i.value);
     box.innerHTML="";
     for(let i=0;i<settings.players;i++){
-      const v = old[i]!==undefined ? old[i] : (savedNames[i]||"");
+      const v=old[i]!==undefined?old[i]:(savedNames[i]||"");
       const row=document.createElement("div"); row.className="nrow";
       row.innerHTML='<b style="background:'+COLORS[i]+'">'+(i+1)+'</b><input type="text" maxlength="16" placeholder="'+(settings.players>1?"Player "+(i+1)+"'s name":"Type your name")+'" value="'+esc(v)+'">';
       box.appendChild(row);
     }
     $("nameMsg").textContent="";
   }
+  function setChip(group,v){
+    document.querySelectorAll('.chips[data-group="'+group+'"] .chip').forEach(c=>c.classList.toggle("on",c.dataset.v===v));
+  }
   document.querySelectorAll(".chips").forEach(group=>{
-    group.addEventListener("click", e=>{
+    group.addEventListener("click",e=>{
       const b=e.target.closest(".chip"); if(!b) return;
       group.querySelectorAll(".chip").forEach(c=>c.classList.remove("on"));
       b.classList.add("on");
       const key=group.dataset.group, v=b.dataset.v;
-      settings[key]=(key==="players"||key==="time")?parseInt(v,10):v;
+      settings[key]=key==="players"?parseInt(v,10):v;
       if(key==="players") drawNameInputs();
       if(key==="level") $("levelInfo").textContent=LEVELINFO[v];
+      if(key==="sound"||key==="music"){ unlockAudio(); if(key==="sound"&&v==="on") sfx.right(); }
+      if(key==="music"){ store("mm_music",v); if(v==="off") music.stop(); }
     });
   });
+  document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{
+    settings.mode=b.dataset.mode;
+    document.querySelectorAll(".mode").forEach(x=>x.classList.toggle("on",x===b));
+    const on=settings.mode==="online";
+    $("onlineBox").classList.toggle("hidden",!on); $("localBox").classList.toggle("hidden",on);
+    $("rulesOnline").classList.toggle("hidden",!on); $("rulesLocal").classList.toggle("hidden",on);
+    $("go").classList.toggle("hidden",on);
+    $("lvlTitle").textContent=on?"Level (if you're the host)":"Level";
+    showBest();
+  });
+  if(load("mm_music")==="off"){ settings.music="off"; setChip("music","off"); }
   drawNameInputs();
   $("levelInfo").textContent=LEVELINFO[settings.level];
 
   function getRuns(){ try{ return JSON.parse(load("mm_runs")||"[]"); }catch(e){ return []; } }
   function showBest(){
     const runs=getRuns().filter(r=>r.n===TOTAL);
-    if(!runs.length){ $("bestLine").textContent=""; return; }
+    if(!runs.length||settings.mode==="online"){ $("bestLine").textContent=""; return; }
     const b=runs.reduce((a,c)=>(c.score>a.score||(c.score===a.score&&c.avg<a.avg))?c:a);
     $("bestLine").textContent="⭐ Top score on this device: "+b.name+" with "+b.score+"/100 • Games played: "+runs.length;
   }
   showBest();
 
-  // ---------- Sound ----------
-  let actx=null;
-  function beep(freq,dur,type){
-    if(settings.sound!=="on") return;
+  // ======================================================
+  //  SOUND: effects + background music (all generated, no files)
+  // ======================================================
+  let actx=null, master=null, noiseBuf=null;
+  function unlockAudio(){
     try{
-      actx=actx||new (window.AudioContext||window.webkitAudioContext)();
-      const o=actx.createOscillator(), g=actx.createGain();
-      o.type=type||"sine"; o.frequency.value=freq;
-      g.gain.setValueAtTime(.15,actx.currentTime);
-      g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+dur);
-      o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime+dur);
+      if(!actx){
+        actx=new (window.AudioContext||window.webkitAudioContext)();
+        master=actx.createGain(); master.gain.value=.9; master.connect(actx.destination);
+        noiseBuf=actx.createBuffer(1,actx.sampleRate,actx.sampleRate);
+        const d=noiseBuf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+      }
+      if(actx.state==="suspended") actx.resume();
     }catch(e){}
   }
-  const sRight=()=>{ beep(660,.12); setTimeout(()=>beep(880,.15),110); };
-  const sWrong=()=>beep(200,.3,"square");
-  const sTick=()=>beep(1000,.05);
-  const sFanfare=()=>{ [523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.18),i*120)); };
+  document.addEventListener("pointerdown",unlockAudio,{passive:true});
+  document.addEventListener("keydown",unlockAudio);
+  function tone(freq,dur,opt){
+    if(!actx) return; opt=opt||{};
+    const t=(opt.at||actx.currentTime), o=actx.createOscillator(), g=actx.createGain();
+    o.type=opt.type||"sine"; o.frequency.setValueAtTime(freq,t);
+    if(opt.slide) o.frequency.exponentialRampToValueAtTime(opt.slide,t+dur);
+    const v=opt.vol||.15;
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(v,t+.01);
+    g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(g); g.connect(opt.dest||master); o.start(t); o.stop(t+dur+.02);
+  }
+  function noise(dur,opt){
+    if(!actx) return; opt=opt||{};
+    const t=opt.at||actx.currentTime, s=actx.createBufferSource(), f=actx.createBiquadFilter(), g=actx.createGain();
+    s.buffer=noiseBuf; f.type=opt.ftype||"highpass"; f.frequency.value=opt.freq||5000;
+    g.gain.setValueAtTime(opt.vol||.1,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    s.connect(f); f.connect(g); g.connect(opt.dest||master); s.start(t); s.stop(t+dur+.02);
+  }
+  const fxOn=()=>settings.sound==="on"&&actx;
+  const sfx={
+    right(){ if(!fxOn()) return; const t=actx.currentTime; [784,988,1319].forEach((f,i)=>tone(f,.18,{at:t+i*.07,type:"triangle",vol:.18})); },
+    wrong(){ if(!fxOn()) return; const t=actx.currentTime; tone(330,.22,{at:t,type:"sawtooth",vol:.08,slide:300}); tone(262,.4,{at:t+.2,type:"sawtooth",vol:.08,slide:180}); },
+    timeout(){ if(!fxOn()) return; tone(140,.6,{type:"square",vol:.08,slide:90}); },
+    tick(){ if(!fxOn()) return; tone(1400,.05,{type:"square",vol:.05}); },
+    streak(){ if(!fxOn()) return; const t=actx.currentTime; [523,659,784,1047,1319].forEach((f,i)=>tone(f,.16,{at:t+.3+i*.06,type:"square",vol:.06})); },
+    cd(){ if(!fxOn()) return; tone(523,.25,{type:"square",vol:.1}); },
+    go(){ if(!fxOn()) return; const t=actx.currentTime; [523,659,784,1047].forEach(f=>tone(f,.6,{at:t,type:"sawtooth",vol:.05})); noise(.4,{vol:.08}); },
+    join(){ if(!fxOn()) return; tone(660,.08,{type:"triangle",vol:.15}); tone(990,.12,{at:actx.currentTime+.07,type:"triangle",vol:.15}); },
+    drumroll(len){ if(!fxOn()) return; const t=actx.currentTime; let x=0; while(x<len){ noise(.06,{at:t+x,ftype:"bandpass",freq:1800,vol:.05+.08*(x/len)}); x+=.045; } noise(.9,{at:t+len,vol:.12,freq:6000}); tone(110,.3,{at:t+len,type:"sine",vol:.25,slide:50}); },
+    fanfare(){ if(!fxOn()) return; const t=actx.currentTime; [[523,0],[659,.12],[784,.24],[1047,.36],[784,.52],[1047,.64]].forEach(([f,d])=>tone(f,d>=.6?.5:.15,{at:t+d,type:"square",vol:.06})); },
+    victory(){ if(!fxOn()) return; const t=actx.currentTime; [[392,0,.15],[523,.15,.15],[659,.3,.15],[784,.45,.3],[659,.78,.15],[784,.93,.6]].forEach(([f,d,l])=>{ tone(f,l,{at:t+d,type:"square",vol:.06}); tone(f/2,l,{at:t+d,type:"triangle",vol:.08}); }); }
+  };
+
+  // Background music: a looping step sequencer (lobby groove + faster game theme)
+  const music=(function(){
+    let timerId=null, step=0, next=0, theme="game", tempo=1, bus=null;
+    const SONGS={
+      lobby:{bpm:104,
+        bass:[48,0,0,48,0,0,55,0, 53,0,0,53,0,0,50,0],
+        lead:[72,0,76,0,79,0,76,0, 77,0,74,0,72,0,0,0, 72,0,76,0,79,0,81,0, 79,0,77,0,76,0,0,0],
+        hat:[0,1,0,1,0,1,0,1]},
+      game:{bpm:132,
+        bass:[45,45,57,45,45,57,45,57, 41,41,53,41,43,43,55,43],
+        lead:[69,0,72,76,0,72,74,0, 69,0,72,76,0,79,76,0, 65,0,69,72,0,69,71,0, 67,0,71,74,0,72,71,0],
+        hat:[1,0,1,1,1,0,1,1]}
+    };
+    const midi=n=>440*Math.pow(2,(n-69)/12);
+    function schedule(){
+      if(!actx||!bus) return;
+      const s=SONGS[theme], spb=60/(s.bpm*tempo)/2;
+      if(next<actx.currentTime) next=actx.currentTime+.02;
+      while(next<actx.currentTime+.15){
+        const b=s.bass[step%s.bass.length], l=s.lead[step%s.lead.length];
+        if(b) tone(midi(b),spb*.9,{at:next,type:"triangle",vol:.11,dest:bus});
+        if(l) tone(midi(l),spb*.8,{at:next,type:"square",vol:.035,dest:bus});
+        if(s.hat[step%s.hat.length]) noise(.03,{at:next,vol:.025,freq:8000,dest:bus});
+        if(step%4===0) tone(60,.12,{at:next,type:"sine",vol:.18,slide:40,dest:bus});
+        next+=spb; step++;
+      }
+    }
+    return {
+      play(th){
+        if(settings.music!=="on"||!actx) return;
+        if(timerId&&theme===th) return;
+        this.stop(); theme=th; tempo=1; step=0;
+        bus=actx.createGain(); bus.gain.value=.7; bus.connect(master);
+        next=actx.currentTime+.05; timerId=setInterval(schedule,40); schedule();
+      },
+      stop(){
+        if(timerId){ clearInterval(timerId); timerId=null; }
+        if(bus){ const b=bus; bus=null; try{ b.gain.setTargetAtTime(0,actx.currentTime,.05); }catch(e){} setTimeout(()=>{ try{ b.disconnect(); }catch(e){} },400); }
+      },
+      hurry(on){ tempo=on?1.35:1; }
+    };
+  })();
+  $("muteBtn").onclick=()=>{
+    unlockAudio();
+    settings.music=settings.music==="on"?"off":"on"; store("mm_music",settings.music); setChip("music",settings.music);
+    $("muteBtn").textContent=settings.music==="on"?"🎵":"🔇";
+    if(settings.music==="on") music.play("game"); else music.stop();
+  };
+
+  // ---------- Countdown (Kahoot style) ----------
+  function countdown(label,sub,cb){
+    unlockAudio(); music.stop();
+    const cd=$("cd"), num=$("cdNum");
+    $("cdLbl").textContent=label; $("cdSub").textContent=sub||"";
+    cd.classList.remove("hidden"); window.scrollTo(0,0);
+    const seq=["3","2","1","GO!"]; let i=0;
+    (function stepCD(){
+      num.textContent=seq[i]; num.classList.toggle("go",seq[i]==="GO!");
+      num.classList.remove("anim"); void num.offsetWidth; num.classList.add("anim");
+      if(seq[i]==="GO!") sfx.go(); else sfx.cd();
+      i++;
+      if(i<seq.length) setTimeout(stepCD,900);
+      else setTimeout(()=>{ cd.classList.add("hidden"); cb(); },700);
+    })();
+  }
 
   // ---------- Question generation ----------
-  const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+  let R=Math.random;
+  function seeded(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+  const rnd=(a,b)=>Math.floor(R()*(b-a+1))+a;
+  const rndM=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
   function pair(){
     const L=settings.level;
     if(L==="easy") return [rnd(2,10),rnd(2,10)];
@@ -359,12 +552,11 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
     return [rnd(11,99),rnd(2,9)];
   }
   function make(op){
-    const L=settings.level;
-    let a,b;
+    const L=settings.level; let a,b;
     if(op==="+"){
       if(L==="easy"){ a=rnd(1,20); b=rnd(1,20); }
       else if(L==="medium"){ a=rnd(10,99); b=rnd(10,99); }
-      else { a=rnd(100,999); b=rnd(10,99); if(Math.random()<.5){ const t=a;a=b;b=t; } }
+      else { a=rnd(100,999); b=rnd(10,99); if(R()<.5){ const t=a;a=b;b=t; } }
       return {a,b,op,ans:a+b};
     }
     if(op==="−"){
@@ -374,25 +566,25 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
       return {a,b,op,ans:a-b};
     }
     const p=pair();
-    if(op==="×"){ if(Math.random()<.5) p.reverse(); return {a:p[0],b:p[1],op,ans:p[0]*p[1]}; }
-    // division: always a whole-number answer
+    if(op==="×"){ if(R()<.5) p.reverse(); return {a:p[0],b:p[1],op,ans:p[0]*p[1]}; }
     return {a:p[0]*p[1],b:p[1],op,ans:p[0]};
   }
   let recent=new Set();
   try{ recent=new Set(JSON.parse(load("mm_recent")||"[]")); }catch(e){}
-  function buildSet(n){
-    // 25 of each operation, shuffled in blocks of 4 so every round has a good mix
+  function buildSet(n,seed){
+    const useSeed=seed!==undefined;
+    R=useSeed?seeded(seed):Math.random;
     const list=[], seen=new Set();
     for(let i=0;i<n;i++){
-      const op=OPS[i%4];
-      let q, guard=0;
+      const op=OPS[i%4]; let q, guard=0;
       do{ q=make(op); guard++; }
-      while(guard<40 && (seen.has(q.a+op+q.b) || (guard<20 && recent.has(q.a+op+q.b))));
+      while(guard<40&&(seen.has(q.a+op+q.b)||(!useSeed&&guard<20&&recent.has(q.a+op+q.b))));
       seen.add(q.a+op+q.b); list.push(q);
     }
     for(let s=0;s<list.length;s+=4){
       for(let i=Math.min(s+3,list.length-1);i>s;i--){ const j=rnd(s,i); [list[i],list[j]]=[list[j],list[i]]; }
     }
+    R=Math.random;
     return list;
   }
   function distractors(q){
@@ -400,73 +592,66 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
     if(q.op==="+"||q.op==="−"){
       c.push(ans+1,ans-1,ans+10,ans-10,ans+2,ans-2,ans+11,ans-9);
       const r=parseInt(String(ans).split("").reverse().join(""),10); if(r!==ans) c.push(r);
-    }else if(q.op==="×"){
-      c.push(ans+q.a,ans-q.a,ans+q.b,ans-q.b,ans+1,ans-1,ans+10,ans-10);
-    }else{
-      c.push(ans+1,ans-1,ans+2,ans-2,q.b,ans+10);
-    }
+    }else if(q.op==="×"){ c.push(ans+q.a,ans-q.a,ans+q.b,ans-q.b,ans+1,ans-1,ans+10,ans-10); }
+    else { c.push(ans+1,ans-1,ans+2,ans-2,q.b,ans+10); }
     const out=[];
-    c.sort(()=>Math.random()-.5).forEach(v=>{ if(out.length<3 && v>=0 && !s.has(v)){ s.add(v); out.push(v); } });
-    let g=0; while(out.length<3 && g<200){ g++; const v=ans+rnd(-12,12); if(v>=0&&!s.has(v)){ s.add(v); out.push(v); } }
+    c.sort(()=>Math.random()-.5).forEach(v=>{ if(out.length<3&&v>=0&&!s.has(v)){ s.add(v); out.push(v); } });
+    let g=0; while(out.length<3&&g<200){ g++; const v=ans+rndM(-12,12); if(v>=0&&!s.has(v)){ s.add(v); out.push(v); } }
     const all=[ans,...out]; all.sort(()=>Math.random()-.5);
     return all;
   }
 
   // ---------- Game state ----------
-  let players=[], cur=0, turnEnd=0, practiceRun=false, inTest=false;
+  let players=[], cur=0, turnEnd=0, practiceRun=false, inTest=false, online=false;
   let timeLeft=0, timer=null, locked=false, qStart=0, lastTick=0;
-
+  const SCREENS=["start","lobby","handoff","game","ranking","submitScreen","results"];
   function show(id){
-    ["start","handoff","game","ranking","submitScreen","results"].forEach(s=>$(s).classList.toggle("hidden",s!==id));
+    SCREENS.forEach(s=>$(s).classList.toggle("hidden",s!==id));
     $("kb").classList.toggle("hidden",id!=="game");
     window.scrollTo(0,0);
   }
+  const visible=id=>!$(id).classList.contains("hidden");
   window.addEventListener("beforeunload",e=>{ if(inTest){ e.preventDefault(); e.returnValue=""; } });
 
   function readNames(){
     const inputs=[...$("names").querySelectorAll("input")];
     let okAll=true; const names=[];
-    inputs.forEach(inp=>{
-      const v=inp.value.trim().replace(/\s+/g," ");
-      inp.classList.toggle("err",!v);
-      if(!v) okAll=false;
-      names.push(v);
-    });
+    inputs.forEach(inp=>{ const v=inp.value.trim().replace(/\s+/g," "); inp.classList.toggle("err",!v); if(!v) okAll=false; names.push(v); });
     if(!okAll){ $("nameMsg").textContent="Please type a name for every player 🙂"; const f=inputs.find(i=>!i.value.trim()); if(f) f.focus(); return null; }
     const lower=names.map(n=>n.toLowerCase());
     if(new Set(lower).size!==lower.length){ $("nameMsg").textContent="Each player needs a different name."; return null; }
-    $("nameMsg").textContent="";
-    return names;
+    $("nameMsg").textContent=""; return names;
+  }
+  function newPlayer(name,i,qs,id){
+    return {id:id||("L"+i), name, color:COLORS[i%COLORS.length], qs, idx:0, log:[], score:0, streak:0, best:0, totalT:0, cp:[]};
   }
 
-  function newPlayer(name,i,qs){
-    return {name, color:COLORS[i%4], qs, idx:0, log:[], score:0, streak:0, best:0, totalT:0, cp:[], prevC:null, prevS:null};
-  }
-
-  function startGame(names, practiceList){
-    practiceRun=!!practiceList;
+  // Local (this device) game
+  function startLocal(names,practiceList,withCountdown){
+    online=false; practiceRun=!!practiceList;
     if(!practiceRun){ savedNames=names; store("mm_names",JSON.stringify(names)); }
     const used=new Set();
-    players=names.map((n,i)=>{
-      const qs=practiceList?practiceList.slice():buildSet(TOTAL);
-      qs.forEach(q=>used.add(q.a+q.op+q.b));
-      return newPlayer(n,i,qs);
-    });
+    players=names.map((n,i)=>{ const qs=practiceList?practiceList.slice():buildSet(TOTAL); qs.forEach(q=>used.add(q.a+q.op+q.b)); return newPlayer(n,i,qs); });
     if(!practiceRun){ recent=used; store("mm_recent",JSON.stringify([...used].slice(0,800))); }
-    cur=0; inTest=true;
+    cur=0; prevPos.c={}; prevPos.s={};
+    prepInputs();
+    const go=()=>{ inTest=true; beginTurn(); };
+    if(withCountdown) countdown("Get ready, "+players.map(p=>p.name).join(", ")+"!", practiceRun?"Practising your mistakes":"100 new questions", go);
+    else go();
+  }
+  function prepInputs(){
     $("opts").classList.toggle("hidden",settings.input!=="choice");
     $("typebox").classList.toggle("hidden",settings.input!=="type");
-    beginTurn();
+    $("muteBtn").textContent=settings.music==="on"?"🎵":"🔇";
   }
-
   function totalRounds(){ return Math.ceil(players[0].qs.length/RS); }
 
   function beginTurn(){
     const p=players[cur];
     if(players.length>1){
+      music.stop();
       $("hoRound").textContent="Round "+(Math.floor(p.idx/RS)+1)+" of "+totalRounds();
-      $("hoAv").textContent=p.name.charAt(0).toUpperCase();
-      $("hoAv").style.background=p.color;
+      $("hoAv").textContent=p.name.charAt(0).toUpperCase(); $("hoAv").style.background=p.color;
       $("hoName").textContent=p.name;
       show("handoff");
     }else playTurn();
@@ -478,192 +663,204 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
     turnEnd=Math.min(p.idx+RS,p.qs.length);
     $("gWho").innerHTML=players.length>1?'<span style="color:'+p.color+'">●</span> '+esc(p.name)+"'s turn":"Go, "+esc(p.name)+"! 💪";
     $("qTot").textContent=p.qs.length;
-    show("game"); nextQ();
+    show("game"); music.play("game"); nextQ();
   }
-
   function drawDots(){
     const p=players[cur], start=turnEnd-((turnEnd-1)%RS)-1, n=turnEnd-start;
-    let h="";
-    for(let i=0;i<n;i++){
-      const k=start+i, r=p.log[k];
-      h+='<i class="'+(r?(r.ok?"ok":"no"):(k===p.idx?"cur":""))+'"></i>';
-    }
+    let h=""; for(let i=0;i<n;i++){ const k=start+i, r=p.log[k]; h+='<i class="'+(r?(r.ok?"ok":"no"):(k===p.idx?"cur":""))+'"></i>'; }
     $("dots").innerHTML=h;
   }
-
   function nextQ(){
     const p=players[cur];
     if(p.idx>=turnEnd){ turnDone(); return; }
-    locked=false;
+    locked=false; music.hurry(false);
     const q=p.qs[p.idx];
     $("qNum").textContent=p.idx+1; $("score").textContent=p.score; $("streak").textContent=p.streak;
     $("prog").style.width=(p.idx/p.qs.length*100)+"%";
     drawDots();
-    $("question").textContent=q.a+" "+q.op+" "+q.b;
+    const qe=$("question"); qe.textContent=q.a+" "+q.op+" "+q.b; qe.classList.remove("pop"); void qe.offsetWidth; qe.classList.add("pop");
     const tag=$("tag"); tag.textContent=OPNAME[q.op]; tag.style.background=OPCOL[q.op];
     $("fb").textContent=""; $("fb").className="feedback";
     if(settings.input==="choice"){
       const box=$("opts"); box.innerHTML="";
+      const shapes=["▲","◆","●","■"];
       distractors(q).forEach((v,i)=>{
         const b=document.createElement("button");
-        b.className="opt"; b.innerHTML="<small>"+(i+1)+"</small>"+v; b.dataset.v=v;
-        b.onclick=()=>answer(v);
-        box.appendChild(b);
+        b.className="opt"; b.innerHTML="<small>"+shapes[i]+" "+(i+1)+"</small>"+v; b.dataset.v=v;
+        b.onclick=()=>answer(v); box.appendChild(b);
       });
     }else{ $("typed").value=""; setTimeout(()=>$("typed").focus(),30); }
-    timeLeft=settings.time; qStart=performance.now(); lastTick=Math.ceil(timeLeft);
+    timeLeft=QTIME; qStart=performance.now(); lastTick=Math.ceil(timeLeft);
     drawTimer(); clearInterval(timer); timer=setInterval(tick,100);
   }
-
   function drawTimer(){
-    const pct=Math.max(0,timeLeft/settings.time*100);
-    const bar=$("bar"); bar.style.width=pct+"%";
-    bar.style.background=pct>50?"var(--green)":pct>25?"var(--amber)":"var(--red)";
+    const pct=Math.max(0,timeLeft/QTIME*100), bar=$("bar");
+    bar.style.width=pct+"%"; bar.style.background=pct>50?"var(--green)":pct>25?"var(--amber)":"var(--red)";
     $("secs").textContent=Math.max(0,Math.ceil(timeLeft));
     $("secs").classList.toggle("low",timeLeft<=5);
   }
   function tick(){
     if(locked) return;
-    timeLeft=settings.time-(performance.now()-qStart)/1000;
+    timeLeft=QTIME-(performance.now()-qStart)/1000;
     const s=Math.ceil(timeLeft);
-    if(s<lastTick && s<=5 && s>0) sTick();
+    if(s<lastTick&&s<=5&&s>0){ sfx.tick(); music.hurry(true); }
     lastTick=s; drawTimer();
     if(timeLeft<=0) answer(null);
   }
-
   function answer(v){
     if(locked) return;
-    locked=true; clearInterval(timer);
+    locked=true; clearInterval(timer); music.hurry(false);
     const p=players[cur], q=p.qs[p.idx];
-    const used=Math.min(settings.time,(performance.now()-qStart)/1000);
-    const ok=v!==null && Number(v)===q.ans;
-    const t=v===null?settings.time:used;
-    p.log.push({a:q.a,b:q.b,op:q.op,ans:q.ans,given:v,ok,timeout:v===null,t});
-    p.totalT+=t;
+    const used=Math.min(QTIME,(performance.now()-qStart)/1000);
+    const ok=v!==null&&Number(v)===q.ans, t=v===null?QTIME:used;
+    p.log.push({a:q.a,b:q.b,op:q.op,ans:q.ans,given:v,ok,timeout:v===null,t}); p.totalT+=t;
     const fb=$("fb");
     if(ok){
       p.score++; p.streak++; p.best=Math.max(p.best,p.streak);
       const cheers=["Great job! 🎉","Super! ⭐","Brilliant! 🌟","Correct! ✅","Amazing! 🚀","You rock! 💪"];
-      fb.textContent=p.streak>=5&&p.streak%5===0?"🔥 "+p.streak+" in a row!":cheers[rnd(0,cheers.length-1)];
-      fb.className="feedback good"; sRight();
+      const hot=p.streak>=5&&p.streak%5===0;
+      fb.textContent=hot?"🔥 "+p.streak+" in a row!":cheers[rndM(0,cheers.length-1)];
+      fb.className="feedback good"; sfx.right(); if(hot) sfx.streak();
     }else{
       p.streak=0;
       fb.textContent=v===null?"⏰ Time's up! It was "+q.ans:"Oops! "+q.a+" "+q.op+" "+q.b+" = "+q.ans;
-      fb.className="feedback bad"; sWrong();
+      fb.className="feedback bad"; if(v===null) sfx.timeout(); else sfx.wrong();
     }
     if(settings.input==="choice"){
       document.querySelectorAll(".opt").forEach(b=>{
         const n=Number(b.dataset.v);
-        if(n===q.ans) b.classList.add("right");
-        else if(v!==null && n===Number(v)) b.classList.add("wrong");
-        else b.classList.add("dim");
+        if(n===q.ans) b.classList.add("right"); else if(v!==null&&n===Number(v)) b.classList.add("wrong"); else b.classList.add("dim");
       });
     }
     $("score").textContent=p.score; $("streak").textContent=p.streak;
     p.idx++; drawDots();
-    setTimeout(nextQ, ok?700:1800);
+    setTimeout(nextQ,ok?700:1800);
   }
-
   function submitTyped(){ const t=$("typed").value.trim(); if(t==="") return; answer(parseInt(t,10)); }
   $("submitTyped").onclick=submitTyped;
   $("typed").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); submitTyped(); } });
   $("typed").addEventListener("input",e=>{ e.target.value=e.target.value.replace(/[^0-9]/g,""); });
   document.addEventListener("keydown",e=>{
-    if($("game").classList.contains("hidden")) return;
-    if(settings.input==="choice" && /^[1-4]$/.test(e.key)){
-      const b=document.querySelectorAll(".opt")[parseInt(e.key,10)-1];
-      if(b) answer(Number(b.dataset.v));
-    }
+    if(!visible("game")) return;
+    if(settings.input==="choice"&&/^[1-4]$/.test(e.key)){ const b=document.querySelectorAll(".opt")[parseInt(e.key,10)-1]; if(b) answer(Number(b.dataset.v)); }
   });
 
   function turnDone(){
     clearInterval(timer);
     const p=players[cur];
     p.cp.push([p.score,+p.totalT.toFixed(2)]);
+    if(online) net.sendCp(p);
     cur++;
     if(cur<players.length){ beginTurn(); return; }
-    cur=0;
-    showRanking();
+    cur=0; showRanking();
   }
 
-  // ---------- Ranking ----------
+  // ======================================================
+  //  RANKING
+  // ======================================================
   const fmt=s=>s<10?s.toFixed(1)+"s":Math.round(s)+"s";
   const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
   const pctOf=(r,n)=>n?Math.round(r/n*100):0;
-
-  function ghostEntries(done){
-    if(practiceRun || !$("ghosts").checked) return [];
-    const k=Math.ceil(done/RS)-1;
-    const live=new Set(players.map(p=>p.name.toLowerCase()));
-    const best={};
-    getRuns().forEach(r=>{
-      if(r.level!==settings.level || r.time!==settings.time || !r.cp || !r.cp[k]) return;
-      const key=r.name.toLowerCase();
-      const fin=r.cp[r.cp.length-1];
-      if(!best[key] || fin[0]>best[key].fin[0] || (fin[0]===best[key].fin[0] && fin[1]<best[key].fin[1])) best[key]={r,fin};
-    });
-    return Object.values(best)
-      .sort((x,y)=>y.fin[0]-x.fin[0]||x.fin[1]-y.fin[1])
-      .slice(0,6)
-      .map(({r})=>({name:r.name, ghost:true, own:live.has(r.name.toLowerCase()), correct:r.cp[k][0], avg:r.cp[k][1]/done, color:"#9aa7c2"}));
-  }
-
-  function rankLists(done){
-    const live=players.map(p=>({p, name:p.name, ghost:false, correct:p.score, avg:p.totalT/Math.max(1,p.idx), color:p.color}));
-    const all=live.concat(ghostEntries(done));
-    const byC=all.slice().sort((x,y)=>y.correct-x.correct||x.avg-y.avg);
-    const byS=all.slice().sort((x,y)=>x.avg-y.avg||y.correct-x.correct);
-    return {all,byC,byS};
-  }
   const medal=i=>["🥇","🥈","🥉"][i]||(i+1);
 
-  function rowsHTML(list,kind,done,track){
-    return list.map((e,i)=>{
+  function ghostEntries(done){
+    if(online||practiceRun||!$("ghosts").checked) return [];
+    const k=Math.ceil(done/RS)-1, live=new Set(players.map(p=>p.name.toLowerCase())), best={};
+    getRuns().forEach(r=>{
+      if(r.level!==settings.level||r.time!==QTIME||!r.cp||!r.cp[k]) return;
+      const key=r.name.toLowerCase(), fin=r.cp[r.cp.length-1];
+      if(!best[key]||fin[0]>best[key].fin[0]||(fin[0]===best[key].fin[0]&&fin[1]<best[key].fin[1])) best[key]={r,fin};
+    });
+    return Object.values(best).sort((x,y)=>y.fin[0]-x.fin[0]||x.fin[1]-y.fin[1]).slice(0,6)
+      .map(({r})=>({id:"G"+r.name, name:r.name, ghost:true, own:live.has(r.name.toLowerCase()), correct:r.cp[k][0], avg:r.cp[k][1]/done, color:"#9aa7c2"}));
+  }
+  // Online: every player in the room at the same checkpoint
+  function onlineEntries(done){
+    const k=Math.ceil(done/RS), prog=net.cps[net.curG]||{}, out=[];
+    Object.keys(prog).forEach(id=>{
+      if(id===net.myId) return;
+      const e=prog[id], c=e.cp[k], base={id, name:e.name, color:net.colorOf(id)};
+      if(c) out.push(Object.assign(base,{correct:c[0], avg:c[1]/done}));
+      else out.push(Object.assign(base,{wait:true, at:e.maxK*RS}));
+    });
+    const me=players[0];
+    if(me){
+      const c=me.cp[k-1]||[me.score,me.totalT];
+      out.push({id:net.myId, name:me.name, color:net.colorOf(net.myId), me:true, correct:c[0], avg:c[1]/done});
+    }
+    return out;
+  }
+  function rankLists(done){
+    let all;
+    if(online) all=onlineEntries(done);
+    else all=players.map(p=>({id:p.id, name:p.name, correct:p.score, avg:p.totalT/Math.max(1,p.idx), color:p.color})).concat(ghostEntries(done));
+    const ready=all.filter(e=>!e.wait), waiting=all.filter(e=>e.wait).sort((a,b)=>b.at-a.at);
+    const byC=ready.slice().sort((x,y)=>y.correct-x.correct||x.avg-y.avg);
+    const byS=ready.slice().sort((x,y)=>x.avg-y.avg||y.correct-x.correct);
+    return {all,ready,waiting,byC,byS};
+  }
+  const prevPos={c:{},s:{}};
+  function rowsHTML(list,waiting,kind,done,track,animate){
+    let h=list.map((e,i)=>{
       let mv="";
-      if(!e.ghost && track){
-        const prev=kind==="c"?e.p.prevC:e.p.prevS;
-        if(prev!==null && prev!==i) mv=prev>i?'<span class="mv up">▲'+(prev-i)+'</span>':'<span class="mv down">▼'+(i-prev)+'</span>';
+      if(!e.ghost&&track){
+        const prev=prevPos[kind][e.id];
+        if(prev!==undefined&&prev!==i) mv=prev>i?'<span class="mv up">▲'+(prev-i)+'</span>':'<span class="mv down">▼'+(i-prev)+'</span>';
         else mv='<span class="mv"></span>';
       }
       const val=kind==="c"?e.correct+"/"+done:fmt(e.avg);
-      const sub=e.ghost?(e.own?"👻 your best":"👻 past best"):(kind==="c"?pctOf(e.correct,done)+"%":"per question");
-      return '<div class="rrow'+(e.ghost?" ghost":" live")+(i===0?" first":"")+'">'+
-        '<span class="pos">'+medal(i)+'</span>'+
-        '<span class="nm"><span style="color:'+e.color+'">●</span> '+esc(e.name)+'<small>'+sub+'</small></span>'+
-        mv+'<span class="val">'+val+'</span></div>';
+      const sub=e.ghost?(e.own?"👻 your best":"👻 past best"):(e.me?"⭐ you":(kind==="c"?pctOf(e.correct,done)+"%":"per Q"));
+      const delay=animate?' style="animation-delay:'+((list.length-1-i)*0.18)+'s"':"";
+      return '<div class="rrow'+(animate?" anim":"")+(e.ghost?" ghost":" live")+(e.me?" me":"")+(i===0?" first":"")+'"'+delay+'>'+
+        '<span class="pos">'+medal(i)+'</span><div class="body"><div class="nm"><span style="color:'+e.color+'">●</span> '+esc(e.name)+'</div>'+
+        '<div class="ln"><small>'+sub+'</small>'+mv+'<span class="val">'+val+'</span></div></div></div>';
     }).join("");
+    h+=waiting.map(e=>'<div class="rrow wait"><span class="pos">⏳</span><div class="body"><div class="nm"><span style="color:'+e.color+'">●</span> '+esc(e.name)+'</div><div class="ln"><small>still playing… '+e.at+' done</small></div></div></div>').join("");
+    return h;
   }
-
-  function showRanking(){
-    const done=players[0].idx, total=players[0].qs.length, finished=done>=total;
-    const {byC,byS,all}=rankLists(done);
-    const track=players.length>1||all.length>1;
-    $("rkC").innerHTML=rowsHTML(byC,"c",done,track);
-    $("rkS").innerHTML=rowsHTML(byS,"s",done,track);
-    // remember positions for the movement arrows
-    byC.forEach((e,i)=>{ if(!e.ghost) e.p.prevC=i; });
-    byS.forEach((e,i)=>{ if(!e.ghost) e.p.prevS=i; });
+  function savePositions(byC,byS){
+    byC.forEach((e,i)=>{ if(!e.ghost) prevPos.c[e.id]=i; });
+    byS.forEach((e,i)=>{ if(!e.ghost) prevPos.s[e.id]=i; });
+  }
+  let rankDone=0, rankTrack=false, rankSnap=null;
+  function renderRanking(animate){
+    const done=rankDone, total=players[0].qs.length, finished=done>=total;
+    const {byC,byS,all,waiting}=rankLists(done);
+    $("rkC").innerHTML=rowsHTML(byC,waiting,"c",done,rankTrack,animate);
+    $("rkS").innerHTML=rowsHTML(byS,waiting,"s",done,rankTrack,animate);
     $("rkTitle").textContent=finished?"🏁 Last round done!":"🏆 Ranking";
     $("rkCp").textContent="After "+done+" of "+total+" questions • Round "+Math.ceil(done/RS)+" of "+totalRounds();
-    const topC=byC[0], topS=byS[0];
     let note="";
-    if(all.length===1) note="Tick 👻 on the start screen and play again to race your best score!";
-    else note="🎯 "+topC.name+" has the most correct"+(topC.ghost?" (past best)":"")+" • ⚡ "+topS.name+" is the fastest"+(topS.ghost?" (past best)":"");
+    if(all.length===1) note=online?"You're the only player in this game so far.":"Tick 👻 on the start screen and play again to race your best score!";
+    else if(byC.length){
+      const topC=byC[0], topS=byS[0];
+      note="🎯 "+topC.name+" has the most correct"+(topC.ghost?" (past best)":"")+" • ⚡ "+topS.name+" is the fastest"+(topS.ghost?" (past best)":"");
+    }
+    if(waiting.length) note+=(note?"\n":"")+"⏳ Still playing: "+waiting.map(w=>w.name).join(", ")+". They'll pop in here as they finish this round.";
     $("rkNote").textContent=note;
     $("rkGo").textContent=finished?"Finish ✅":"Next 5 ▶️";
-    show("ranking");
-    sFanfare();
+    rankSnap={byC,byS};
   }
+  function showRanking(){
+    rankDone=players[0].idx;
+    rankTrack=players.length>1||rankLists(rankDone).all.length>1;
+    music.stop(); show("ranking");
+    renderRanking(true);
+    sfx.drumroll(1.1); setTimeout(()=>sfx.fanfare(),1150);
+  }
+  function leaveRanking(){ if(rankSnap) savePositions(rankSnap.byC,rankSnap.byS); }
   $("rkGo").onclick=()=>{
+    leaveRanking();
     if(players[0].idx>=players[0].qs.length){ show("submitScreen"); return; }
     beginTurn();
   };
   $("submitTest").onclick=()=>{ inTest=false; showResults(); };
 
-  // ---------- Results ----------
+  // ======================================================
+  //  RESULTS
+  // ======================================================
   function tipsFor(p){
-    const log=p.log, n=log.length, pct=pctOf(p.score,n), avgAll=p.totalT/Math.max(1,n);
-    const tips=[];
+    const log=p.log, n=log.length, pct=pctOf(p.score,n), avgAll=p.totalT/Math.max(1,n), tips=[];
     const to=log.filter(r=>r.timeout).length;
     if(to) tips.push("<b>Never leave a blank.</b> "+to+" question"+(to>1?"s":"")+" ran out of time. Make your best guess before the timer hits 0.");
     const per=OPS.map(op=>{ const a=log.filter(r=>r.op===op); return {op,n:a.length,p:pctOf(a.filter(r=>r.ok).length,a.length),t:avg(a.map(r=>r.t))}; }).filter(o=>o.n>=3);
@@ -673,50 +870,50 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
       const slowest=per.slice().sort((x,y)=>y.t-x.t)[0];
       if(slowest.t>5) tips.push("<b>Speed up on "+OPNAME[slowest.op].toLowerCase()+"</b>: "+fmt(slowest.t)+" per question.");
     }
-    if(per.some(o=>o.op==="÷" && o.p<80)) tips.push("<b>Sharing tip:</b> turn it into times. 56 ÷ 8 → what times 8 makes 56? → 7.");
-    if(per.some(o=>o.op==="−" && o.p<80)) tips.push("<b>Taking away tip:</b> count up from the smaller number. 82 − 47 → 47 + 3 = 50, + 32 = 82, so 35.");
-    if(n>=20){
-      const h=Math.ceil(n/2), h1=pctOf(log.slice(0,h).filter(r=>r.ok).length,h), h2=pctOf(log.slice(h).filter(r=>r.ok).length,n-h);
-      if(h2<h1-10) tips.push("<b>Stamina:</b> your score dropped from "+h1+"% to "+h2+"% in the second half. Keep focused right to the end.");
-    }
+    if(per.some(o=>o.op==="÷"&&o.p<80)) tips.push("<b>Dividing tip:</b> turn it into times. 56 ÷ 8 → what times 8 makes 56? → 7.");
+    if(per.some(o=>o.op==="−"&&o.p<80)) tips.push("<b>Taking away tip:</b> count up from the smaller number. 82 − 47 → 47 + 3 = 50, + 32 = 82, so 35.");
+    if(n>=20){ const h=Math.ceil(n/2), h1=pctOf(log.slice(0,h).filter(r=>r.ok).length,h), h2=pctOf(log.slice(h).filter(r=>r.ok).length,n-h);
+      if(h2<h1-10) tips.push("<b>Stamina:</b> your score dropped from "+h1+"% to "+h2+"% in the second half. Keep focused right to the end."); }
     if(avgAll>6) tips.push("<b>Speed goal:</b> average "+fmt(avgAll)+" per question. Aim for under 5 seconds.");
-    if(pct>=90 && avgAll<=5) tips.push("<b>Superstar!</b> 🏆 Try the next level or 10-second mode.");
+    if(pct>=90&&avgAll<=5) tips.push("<b>Superstar!</b> 🏆 Try the next level up.");
     if(!tips.length) tips.push("<b>Keep going!</b> Play every day and watch your ranking climb.");
     return tips;
   }
-
-  function showResults(){
+  function renderFinal(animate){
     const done=players[0].log.length;
-    const {byC,byS}=rankLists(done);
-    $("frC").innerHTML=rowsHTML(byC,"c",done,false);
-    $("frS").innerHTML=rowsHTML(byS,"s",done,false);
+    const {byC,byS,waiting}=rankLists(done);
+    $("frC").innerHTML=rowsHTML(byC,waiting,"c",done,false,animate);
+    $("frS").innerHTML=rowsHTML(byS,waiting,"s",done,false,animate);
     const liveC=byC.filter(e=>!e.ghost);
-    $("podium").innerHTML=players.length>1?[1,0,2].filter(i=>liveC[i]).map(i=>{
+    $("podium").innerHTML=liveC.length>1?[1,0,2].filter(i=>liveC[i]).map(i=>{
       const e=liveC[i], h=[110,80,60][i];
-      return '<div style="background:'+e.color+';height:'+h+'px">'+medal(i)+" "+esc(e.name)+'<small>'+e.correct+'/'+done+'</small></div>';
+      return '<div style="background:'+e.color+';height:'+h+'px;animation-delay:'+[.6,.3,0][i]+'s">'+medal(i)+" "+esc(e.name)+'<small>'+e.correct+'/'+done+'</small></div>';
     }).join(""):"";
-    $("frNote").textContent=practiceRun?"Mistakes practice: not saved to the ranking.":"🎯 = most correct answers • ⚡ = fastest average time per question";
-
+    let note=practiceRun?"Mistakes practice: not saved to the ranking.":"🎯 = most correct answers • ⚡ = fastest average time per question";
+    if(waiting.length) note+="\n⏳ Still playing: "+waiting.map(w=>w.name).join(", ")+". The ranking updates when they finish.";
+    $("frNote").textContent=note;
+    return {byC,byS,waiting};
+  }
+  function showResults(){
+    music.stop();
+    const {byC,byS,waiting}=renderFinal(true);
     const runs=getRuns();
     $("playerCards").innerHTML=players.map((p,pi)=>{
       const log=p.log, n=log.length, pct=pctOf(p.score,n);
       const wrong=log.filter(r=>!r.ok&&!r.timeout).length, to=log.filter(r=>r.timeout).length;
-      const avgAll=p.totalT/Math.max(1,n);
-      const rightT=log.filter(r=>r.ok).map(r=>r.t);
+      const avgAll=p.totalT/Math.max(1,n), rightT=log.filter(r=>r.ok).map(r=>r.t);
       const mins=Math.floor(p.totalT/60), secs=Math.round(p.totalT%60);
-      const prev=runs.filter(r=>r.name.toLowerCase()===p.name.toLowerCase() && r.level===settings.level && r.n===n).slice(-1)[0];
+      const prev=runs.filter(r=>r.name.toLowerCase()===p.name.toLowerCase()&&r.level===settings.level&&r.n===n).slice(-1)[0];
       let delta="";
-      if(prev && !practiceRun){
+      if(prev&&!practiceRun){
         const dp=p.score-prev.score, dt=avgAll-prev.avg;
         delta=(dp===0?"Same score as last time":(dp>0?"▲ "+dp+" more correct":"▼ "+(-dp)+" fewer correct")+" than last time")+" • "+(Math.abs(dt)<0.1?"same speed":(dt<0?"▲ "+(-dt).toFixed(1)+"s faster":"▼ "+dt.toFixed(1)+"s slower"));
       }
-      const opRows=OPS.map(op=>{
-        const a=log.filter(r=>r.op===op); if(!a.length) return "";
-        return "<tr><td>"+op+" "+OPNAME[op]+"</td><td>"+a.length+"</td><td>"+pctOf(a.filter(r=>r.ok).length,a.length)+"%</td><td>"+fmt(avg(a.map(r=>r.t)))+"</td><td>"+a.filter(r=>r.timeout).length+"</td></tr>";
-      }).join("");
+      const opRows=OPS.map(op=>{ const a=log.filter(r=>r.op===op); if(!a.length) return "";
+        return "<tr><td>"+op+" "+OPNAME[op]+"</td><td>"+a.length+"</td><td>"+pctOf(a.filter(r=>r.ok).length,a.length)+"%</td><td>"+fmt(avg(a.map(r=>r.t)))+"</td><td>"+a.filter(r=>r.timeout).length+"</td></tr>"; }).join("");
       const mistakes=log.filter(r=>!r.ok);
       p._tips=tipsFor(p);
-      return '<div class="card" id="pc'+pi+'">'+
+      return '<div class="card">'+
         '<div class="pname"><i style="background:'+p.color+'"></i>'+esc(p.name)+'</div>'+
         '<div class="stars">'+(pct>=90?"⭐⭐⭐":pct>=70?"⭐⭐":pct>=40?"⭐":"🌱")+'</div>'+
         '<div class="bignum">'+p.score+'/'+n+'</div>'+
@@ -734,61 +931,192 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
         '<ul class="tips">'+p._tips.map(t=>"<li>"+t+"</li>").join("")+'</ul>'+
         (mistakes.length?'<details><summary>💪 '+mistakes.length+' to practise again</summary><div class="list scroll">'+
           mistakes.map(m=>"<div><span>"+m.a+" "+m.op+" "+m.b+" = <b>"+m.ans+"</b></span><span class='muted'>"+(m.timeout?"⏰ too slow":"said "+esc(m.given))+"</span></div>").join("")+
-          '</div></details><button class="btn" data-practice="'+pi+'">Practise '+esc(p.name)+"'s mistakes</button>":"")+
+          '</div></details><button class="btn ghost" data-practice="'+pi+'">Practise '+esc(p.name)+"'s mistakes (on my own)</button>":"")+
       '</div>';
     }).join("");
     document.querySelectorAll("[data-practice]").forEach(b=>{
-      b.onclick=()=>{
-        const p=players[+b.dataset.practice];
-        const list=p.log.filter(r=>!r.ok).map(m=>({a:m.a,b:m.b,op:m.op,ans:m.ans}));
-        startGame([p.name],list);
-      };
+      b.onclick=()=>{ const p=players[+b.dataset.practice]; const list=p.log.filter(r=>!r.ok).map(m=>({a:m.a,b:m.b,op:m.op,ans:m.ans})); startLocal([p.name],list,true); };
     });
-
-    // save runs + email
     if(!practiceRun){
-      players.forEach(p=>runs.push({name:p.name,level:settings.level,time:settings.time,n:p.log.length,score:p.score,avg:+(p.totalT/Math.max(1,p.log.length)).toFixed(2),cp:p.cp,d:new Date().toISOString()}));
+      players.forEach(p=>runs.push({name:p.name,level:settings.level,time:QTIME,n:p.log.length,score:p.score,avg:+(p.totalT/Math.max(1,p.log.length)).toFixed(2),cp:p.cp,d:new Date().toISOString()}));
       while(runs.length>80) runs.shift();
       store("mm_runs",JSON.stringify(runs));
     }
-    const finalPosC={}, finalPosS={};
-    byC.filter(e=>!e.ghost).forEach((e,i)=>finalPosC[e.name]=i+1);
-    byS.filter(e=>!e.ghost).forEach((e,i)=>finalPosS[e.name]=i+1);
-    players.forEach((p,pi)=>{ if(p.log.length) sendReport(buildReport(p,finalPosC[p.name],finalPosS[p.name]),"send"+pi); });
-
+    const posC={}, posS={};
+    byC.filter(e=>!e.ghost).forEach((e,i)=>posC[e.id]=i+1);
+    byS.filter(e=>!e.ghost).forEach((e,i)=>posS[e.id]=i+1);
+    const count=byC.filter(e=>!e.ghost).length+waiting.length;
+    players.forEach((p,pi)=>{ if(p.log.length){ const id=online?net.myId:p.id; sendReport(buildReport(p,posC[id],posS[id],count),"send"+pi); } });
+    updateAgain();
     show("results");
+    setTimeout(()=>sfx.victory(),300);
     if(players.some(p=>pctOf(p.score,p.log.length)>=70)) confetti();
   }
+  function updateAgain(){
+    const b=$("again"), n=$("againNote");
+    if(!online){ b.textContent="Play again 🔁"; n.textContent="New random questions, starting with a 3-2-1 countdown."; return; }
+    const newer=net.latestG()>net.curG;
+    b.textContent=newer?"Join the new game ▶️":"Play again 🔁";
+    n.textContent=newer?"Someone has already started the next game!":"Starts a new game for everyone in room "+net.code+", with new questions and a 3-2-1 countdown on every screen.";
+  }
+  $("again").onclick=()=>{
+    unlockAudio();
+    if(!online){ startLocal(practiceRun?[players[0].name]:savedNames.slice(0,settings.players),null,true); return; }
+    if(net.latestG()>net.curG) net.beginGame(net.latestG());
+    else net.requestStart();
+  };
 
-  function buildReport(p,posC,posS){
+  function buildReport(p,posC,posS,count){
     const log=p.log, n=log.length, pct=pctOf(p.score,n);
     const strip=h=>h.replace(/<[^>]+>/g,"").replace(/&nbsp;/g," ");
     const opLine=op=>{ const a=log.filter(r=>r.op===op); return a.length?a.length+" questions, "+pctOf(a.filter(r=>r.ok).length,a.length)+"% correct, "+fmt(avg(a.map(r=>r.t)))+" average, "+a.filter(r=>r.timeout).length+" timed out":"none"; };
     const mistakes=log.filter(r=>!r.ok);
     const rounds=p.cp.map((c,i)=>{ const pc=i?p.cp[i-1]:[0,0]; return "R"+(i+1)+": "+(c[0]-pc[0])+"/"+Math.min(RS,n-i*RS)+" in "+fmt(c[1]-pc[1]); }).join(" | ");
+    const others=online?[...new Set(Object.values(net.cps[net.curG]||{}).map(e=>e.name).concat([p.name]))].join(", "):players.map(x=>x.name).join(", ");
     return {
       "_subject":"Mental Maths results: "+p.name+" "+p.score+"/"+n+" ("+pct+"%)",
       "_template":"table","_captcha":"false",
       "Name":p.name,
       "Date and time":new Date().toLocaleString(),
-      "Players in this game":players.map(x=>x.name).join(", "),
-      "Ranking (most correct)":posC+" of "+players.length,
-      "Ranking (fastest)":posS+" of "+players.length,
+      "How they played":online?"Online room "+net.code:"On one device",
+      "Players in this game":others,
+      "Ranking (most correct)":(posC||"–")+" of "+count+(online?" (when they finished)":""),
+      "Ranking (fastest)":(posS||"–")+" of "+count,
       "Test type":practiceRun?"Practise my mistakes":"100-question challenge",
-      "Settings":settings.level+" level | "+(settings.input==="choice"?"Pick an option":"Typed answers")+" | "+settings.time+"s per question",
+      "Settings":settings.level+" level | "+(settings.input==="choice"?"Pick an option":"Typed answers")+" | "+QTIME+"s per question",
       "Score":p.score+" / "+n+" ("+pct+"%)",
       "Correct / Wrong / Timed out":p.score+" / "+log.filter(r=>!r.ok&&!r.timeout).length+" / "+log.filter(r=>r.timeout).length,
       "Average time per question":fmt(p.totalT/Math.max(1,n)),
       "Best streak":String(p.best),
-      "Adding (+)":opLine("+"),
-      "Taking away (−)":opLine("−"),
-      "Times (×)":opLine("×"),
-      "Sharing (÷)":opLine("÷"),
+      "Adding (+)":opLine("+"), "Taking away (−)":opLine("−"), "Times (×)":opLine("×"), "Dividing (÷)":opLine("÷"),
       "Each round of 5":rounds,
       "Mistakes":mistakes.length?mistakes.slice(0,60).map(m=>m.a+" "+m.op+" "+m.b+" = "+m.ans+(m.timeout?" (timed out)":" (said "+m.given+")")).join(" | "):"none",
       "Coach's tips":p._tips.map(strip).join(" | ")
     };
   }
+
+  // ======================================================
+  //  ONLINE ROOMS (free ntfy.sh relay: no accounts, no setup)
+  // ======================================================
+  const RELAY=load("mm_relay")||"https://ntfy.sh";
+  const net={
+    code:"", topic:"", es:null, myId:"", myName:"", host:false,
+    members:{}, games:{}, cps:{}, curG:0, seen:new Set(), connectedAt:0, ok:false,
+    colorMap:{},
+    colorOf(id){ return this.colorMap[id]||"#9aa7c2"; },
+    assignColor(id){ if(!this.colorMap[id]) this.colorMap[id]=COLORS[Object.keys(this.colorMap).length%COLORS.length]; },
+    latestG(){ return Math.max(0,...Object.keys(this.games).map(Number)); },
+    publish(obj){
+      obj.id=this.myId; obj.name=this.myName;
+      const body=JSON.stringify(obj);
+      const send=()=>fetch(RELAY+"/"+this.topic,{method:"POST",body}).then(r=>{ if(!r.ok) throw new Error(r.status); });
+      return send().catch(()=>new Promise(r=>setTimeout(r,1500)).then(send)).catch(()=>{ if(visible("lobby")) this.error("Couldn't reach the room. Check the internet connection."); });
+    },
+    connect(code,host){
+      unlockAudio();
+      this.code=code; this.topic="sisd-mmc-"+code.toLowerCase(); this.host=host;
+      this.members={}; this.games={}; this.cps={}; this.colorMap={}; this.curG=0; this.seen=new Set(); this.ok=false;
+      this.myName=$("myName").value.trim().replace(/\s+/g," ");
+      this.myId=load("mm_pid")||(Math.random().toString(36).slice(2,10)); store("mm_pid",this.myId);
+      this.members[this.myId]={name:this.myName,at:Date.now()/1000};
+      online=true; players=[];
+      $("lbCode").textContent=code; $("lbErr").classList.add("hidden"); $("lbJump").classList.add("hidden");
+      this.renderLobby(); show("lobby"); music.play("lobby");
+      this.connectedAt=Date.now()/1000;
+      try{
+        if(this.es) this.es.close();
+        this.es=new EventSource(RELAY+"/"+this.topic+"/sse?since=all");
+        this.es.onopen=()=>{ this.ok=true; $("lbErr").classList.add("hidden"); };
+        this.es.onmessage=ev=>{ try{ const d=JSON.parse(ev.data); if(d.event==="message") this.onMsg(d); }catch(e){} };
+        this.es.onerror=()=>{ if(!this.ok&&visible("lobby")) this.error("Connecting to the room… If this doesn't go away, the school Wi-Fi may be blocking it. Try mobile data, or play 'On this device'."); };
+      }catch(e){ this.error("This browser can't join online rooms. Please play 'On this device'."); }
+      this.publish({t:"join"});
+      setTimeout(()=>this.checkRunning(),2500);
+    },
+    leave(){ if(this.es) this.es.close(); this.es=null; online=false; inTest=false; music.stop(); show("start"); },
+    error(msg){ const e=$("lbErr"); e.textContent=msg; e.classList.remove("hidden"); },
+    onMsg(d){
+      if(this.seen.has(d.id)) return; this.seen.add(d.id);
+      let m; try{ m=JSON.parse(d.message); }catch(e){ return; }
+      if(!m||!m.id) return;
+      const live=d.time>=this.connectedAt-3;
+      this.assignColor(m.id);
+      if(m.t==="join"){
+        const isNew=!this.members[m.id];
+        this.members[m.id]={name:m.name,at:d.time};
+        if(isNew&&live&&m.id!==this.myId) sfx.join();
+        if(visible("lobby")) this.renderLobby();
+      }else if(m.t==="start"){
+        if(this.games[m.g]) return;          // first start message for a game number wins
+        this.games[m.g]={seed:m.seed,level:m.level,input:m.input,by:m.name,time:d.time};
+        if(!this.members[m.id]) this.members[m.id]={name:m.name,at:d.time};
+        if(live&&m.g>this.curG&&(visible("lobby")||visible("results"))) this.beginGame(m.g);
+        else if(visible("results")) updateAgain();
+        else if(visible("lobby")) this.checkRunning();
+      }else if(m.t==="cp"){
+        const G=this.cps[m.g]=this.cps[m.g]||{};
+        const e=G[m.id]=G[m.id]||{name:m.name,cp:{},maxK:0};
+        e.cp[m.k]=[m.c,m.tt]; e.maxK=Math.max(e.maxK,m.k); e.name=m.name;
+        if(m.g===this.curG){
+          if(visible("ranking")) renderRanking(false);
+          if(visible("results")) renderFinal(false);
+        }
+      }
+    },
+    renderLobby(){
+      const list=Object.entries(this.members);
+      $("lbCount").textContent=list.length;
+      $("lbList").innerHTML=list.map(([id,m])=>'<span class="'+(id===this.myId?"me":"")+'" style="background:'+this.colorOf(id)+'">'+esc(m.name)+(id===this.myId?" (you)":"")+'</span>').join("");
+      $("lbStart").classList.toggle("hidden",!this.host);
+      $("lbInfo").textContent=this.host?"When everyone's name is showing, press Start. Level: "+settings.level+".":"Waiting for the host to start… 🎶";
+    },
+    checkRunning(){
+      if(!visible("lobby")) return;
+      const g=this.latestG();
+      const running=g>this.curG&&(Date.now()/1000-this.games[g].time)<45*60;
+      $("lbJump").classList.toggle("hidden",!running);
+      if(running) $("lbInfo").textContent="A game started by "+this.games[g].by+" is already running. Jump in!";
+    },
+    requestStart(){
+      const g=this.latestG()+1;
+      const msg={t:"start",g,seed:Math.floor(Math.random()*2e9),level:settings.level,input:settings.input};
+      this.publish(msg);
+      // if the relay echo is slow, start anyway with our own message
+      setTimeout(()=>{ if(!this.games[g]){ this.games[g]={seed:msg.seed,level:msg.level,input:msg.input,by:this.myName,time:Date.now()/1000}; this.beginGame(g); } },3500);
+    },
+    beginGame(g){
+      if(g<=this.curG) return;
+      const G=this.games[g]; if(!G) return;
+      this.curG=g; practiceRun=false; online=true;
+      settings.level=G.level; settings.input=G.input; setChip("level",G.level); setChip("input",G.input);
+      players=[newPlayer(this.myName,0,buildSet(TOTAL,G.seed),this.myId)];
+      players[0].color=this.colorOf(this.myId);
+      $("gWho").style.color="";
+      prevPos.c={}; prevPos.s={}; cur=0;
+      prepInputs();
+      countdown("Room "+this.code+" • Game "+g, "Everyone gets the same 100 questions", ()=>{ inTest=true; this.publish({t:"cp",g,k:0,c:0,tt:0}); playTurn(); });
+    },
+    sendCp(p){ const c=p.cp[p.cp.length-1]; this.publish({t:"cp",g:this.curG,k:p.cp.length,c:c[0],tt:c[1]}); }
+  };
+  function roomCode(){ const A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; let s=""; for(let i=0;i<5;i++) s+=A[Math.floor(Math.random()*A.length)]; return s; }
+  function needName(){
+    const v=$("myName").value.trim();
+    $("myName").classList.toggle("err",!v);
+    $("onMsg").textContent=v?"":"Please type your name first 🙂";
+    if(!v) $("myName").focus(); else store("mm_myname",v);
+    return !!v;
+  }
+  $("createRoom").onclick=()=>{ if(needName()) net.connect(roomCode(),true); };
+  $("joinRoom").onclick=()=>{
+    if(!needName()) return;
+    const c=$("joinCode").value.trim().toUpperCase().replace(/[^A-Z0-9]/g,"");
+    if(c.length!==5){ $("onMsg").textContent="Type the 5-letter room code from the host."; $("joinCode").focus(); return; }
+    net.connect(c,false);
+  };
+  $("joinCode").addEventListener("keydown",e=>{ if(e.key==="Enter") $("joinRoom").click(); });
+  $("lbStart").onclick=()=>{ $("lbStart").disabled=true; net.requestStart(); setTimeout(()=>$("lbStart").disabled=false,4000); };
+  $("lbJump").onclick=()=>net.beginGame(net.latestG());
+  $("lbLeave").onclick=()=>net.leave();
 
   // ---------- Email sending (FormSubmit) ----------
   const MAIL_TO="aahmed.dbs@gmail.com";
@@ -802,12 +1130,9 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
   function sendReport(r,statusId){
     const st=$(statusId);
     if(st){ st.className="sendStatus"; st.textContent="📧 Sending results to the teacher…"; }
-    sendChain=sendChain.then(()=>postReport(r).then(()=>{
-      if(st){ st.className="sendStatus ok"; st.textContent="📧 Results sent ✓"; }
-    }).catch(()=>{
-      const p=getPending(); p.push(r); while(p.length>20) p.shift(); store("mm_pending",JSON.stringify(p));
-      if(st){ st.className="sendStatus err"; st.textContent="📧 Couldn't send right now. Will send automatically next time the game opens online."; }
-    }));
+    sendChain=sendChain.then(()=>postReport(r).then(()=>{ if(st){ st.className="sendStatus ok"; st.textContent="📧 Results sent ✓"; } })
+      .catch(()=>{ const p=getPending(); p.push(r); while(p.length>20) p.shift(); store("mm_pending",JSON.stringify(p));
+        if(st){ st.className="sendStatus err"; st.textContent="📧 Couldn't send right now. Will send automatically next time the game opens online."; } }));
   }
   function flushPending(){
     const p=getPending(); if(!p.length) return;
@@ -826,9 +1151,8 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:10px
     }
   }
 
-  $("go").onclick=()=>{ const names=readNames(); if(names) startGame(names); };
-  $("again").onclick=()=>startGame(savedNames.slice(0,settings.players));
-  $("home").onclick=()=>{ showBest(); drawNameInputs(); show("start"); };
+  $("go").onclick=()=>{ unlockAudio(); const names=readNames(); if(names) startLocal(names,null,true); };
+  $("home").onclick=()=>{ if(online) net.leave(); showBest(); drawNameInputs(); show("start"); };
   $("printBtn").onclick=()=>window.print();
 })();
 </script>
